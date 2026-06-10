@@ -7,7 +7,7 @@
       </div>
       <nav class="flex-1 py-3 space-y-0.5 px-2 overflow-y-auto">
         <router-link v-for="item in navItems" :key="item.path" :to="item.path"
-          class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm transition-all"
+          class="nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm relative overflow-hidden"
           :class="[$route.path === item.path ? 'bg-white/10 text-white font-semibold' : 'text-slate-400 hover:text-white hover:bg-white/5']">
           <span v-html="item.icon"></span>
           {{ item.label }}
@@ -41,18 +41,47 @@ const navItems = [
 ]
 </script>
 
-
 <style scoped>
-.page-enter-active,
+/* 侧边栏链接动画 */
+.nav-link {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-link:active {
+  transform: scale(0.96);
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.nav-link:hover::after {
+  width: 40%;
+}
+.nav-link.router-link-active::after {
+  width: 50%;
+  background: rgba(255,255,255,0.8);
+}
+
+/* 页面切换动画 — 从左滑入 */
+.page-enter-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 .page-leave-active {
-  transition: all 0.25s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .page-enter-from {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateX(30px);
 }
 .page-leave-to {
   opacity: 0;
-  transform: translateY(-12px);
+  transform: translateX(-30px);
 }
 </style>
