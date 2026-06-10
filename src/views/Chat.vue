@@ -1,15 +1,15 @@
 <template>
   <div class="flex h-screen bg-slate-50 overflow-hidden">
-    <!-- ???????? -->
+    <!-- 左侧：对话主区域 -->
     <div class="flex-1 flex flex-col min-w-0">
       <div class="p-6 border-b bg-white flex justify-between items-center">
         <div>
-          <h1 class="text-xl font-black text-slate-800">?? AI ??</h1>
-          <p class="text-xs text-slate-400 mt-1">? AI ??????????????</p>
+          <h1 class="text-xl font-black text-slate-800">💬 AI 对话</h1>
+          <p class="text-xs text-slate-400 mt-1">与 AI 自由交流，选择不同的智能大脑</p>
         </div>
         <button @click="showHistory = !showHistory" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm transition flex items-center gap-1.5">
-          <span>??</span>
-          <span class="text-slate-600">????</span>
+          <span>💬</span>
+          <span class="text-slate-600">历史记录</span>
           <span v-if="conversations.length > 0" class="bg-indigo-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">{{ conversations.length }}</span>
         </button>
       </div>
@@ -24,7 +24,7 @@
 
       <div class="flex-1 overflow-y-auto p-6" ref="chatContainer">
         <div v-if="messages.length === 0" class="text-center text-slate-400 py-20">
-          ??? AI ??? ??
+          开始与 AI 对话吧 👋
         </div>
         <div class="space-y-4 max-w-3xl mx-auto">
           <div v-for="msg in messages" :key="msg.id" :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'" class="max-w-[80%]">
@@ -37,47 +37,47 @@
           </div>
         </div>
         <div v-if="loading" class="text-center text-slate-400 py-4">
-          <span class="animate-pulse">AI ????...</span>
+          <span class="animate-pulse">AI 正在思考...</span>
         </div>
       </div>
       
       <div class="p-4 border-t bg-white">
         <div class="flex gap-2 max-w-3xl mx-auto">
-          <textarea v-model="input" rows="2" placeholder="????..." class="flex-1 p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none" @keyup.ctrl.enter="sendMessage"></textarea>
+          <textarea v-model="input" rows="2" placeholder="输入消息..." class="flex-1 p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none" @keyup.ctrl.enter="sendMessage"></textarea>
           <button @click="sendMessage" :disabled="loading || !input.trim()" class="px-6 py-3 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition disabled:opacity-50 self-end">
-            ??
+            发送
           </button>
         </div>
-        <p class="text-[10px] text-slate-400 mt-2 text-center">Ctrl + Enter ??</p>
+        <p class="text-[10px] text-slate-400 mt-2 text-center">Ctrl + Enter 发送</p>
       </div>
     </div>
 
-    <!-- ????????? -->
+    <!-- 右侧：历史对话面板 -->
     <transition name="slide">
       <aside v-if="showHistory" class="w-72 bg-white border-l border-slate-200 flex flex-col shrink-0">
         <div class="p-4 border-b flex justify-between items-center">
-          <h2 class="font-bold text-slate-800">?? ????</h2>
+          <h2 class="font-bold text-slate-800">💬 对话历史</h2>
           <button @click="showHistory = false" class="text-slate-400 hover:text-slate-600 text-lg leading-none">&times;</button>
         </div>
         <div class="flex-1 overflow-y-auto p-3 space-y-2">
           <button @click="startNewChat" class="w-full p-3 text-left bg-indigo-50 hover:bg-indigo-100 rounded-xl text-sm text-indigo-700 font-medium transition">
-            ? ????
+            ✨ 新建对话
           </button>
-          <div v-if="conversations.length === 0" class="text-center text-slate-400 text-xs py-8">??????</div>
+          <div v-if="conversations.length === 0" class="text-center text-slate-400 text-xs py-8">暂无历史对话</div>
           <div v-for="conv in conversations" :key="conv.id" 
             @click="loadConversation(conv)"
             :class="currentConvId === conv.id ? 'bg-indigo-100 border-indigo-300' : 'bg-white hover:bg-slate-50 border-transparent'"
             class="p-3 border rounded-xl cursor-pointer transition group">
             <div class="flex justify-between items-start">
               <div class="text-sm font-medium text-slate-800 truncate flex-1">{{ conv.title }}</div>
-              <button @click.stop="deleteConversation(conv.id)" class="text-slate-300 hover:text-red-400 text-xs ml-2 opacity-0 group-hover:opacity-100 transition" title="????">&times;</button>
+              <button @click.stop="deleteConversation(conv.id)" class="text-slate-300 hover:text-red-400 text-xs ml-2 opacity-0 group-hover:opacity-100 transition" title="删除对话">&times;</button>
             </div>
             <div class="text-xs text-slate-400 mt-1">{{ conv.date }}</div>
           </div>
         </div>
         <div class="p-3 border-t">
           <button @click="startNewChat" class="w-full p-2.5 bg-slate-900 text-white text-sm rounded-xl hover:bg-slate-800 transition">
-            + ????
+            + 新建对话
           </button>
         </div>
       </aside>
@@ -93,11 +93,11 @@ const CONVERSATIONS_KEY = 'lb_conversations';
 const CURRENT_CONV_KEY = 'lb_current_conversation';
 
 const providers = [
-  { key: 'zhipu', name: '????', icon: '??' },
-  { key: 'deepseek', name: 'DeepSeek', icon: '??' },
-  { key: 'qwen', name: '????', icon: '??' },
-  { key: 'doubao', name: '??', icon: '??' },
-  { key: 'yuanbao', name: '????', icon: '??' }
+  { key: 'zhipu', name: '智谱清言', icon: '🧠' },
+  { key: 'deepseek', name: 'DeepSeek', icon: '🤖' },
+  { key: 'qwen', name: '通义千问', icon: '💬' },
+  { key: 'doubao', name: '豆包', icon: '🫘' },
+  { key: 'yuanbao', name: '腾讯元宝', icon: '🐧' }
 ];
 
 const selectedProvider = ref('zhipu');
@@ -150,7 +150,7 @@ const loadConversation = (conv) => {
 const startNewChat = () => {
   const newConv = {
     id: Date.now(),
-    title: '???',
+    title: '新对话',
     date: new Date().toLocaleDateString('zh-CN'),
     messages: [],
     provider: 'zhipu'
@@ -165,7 +165,7 @@ const startNewChat = () => {
 };
 
 const deleteConversation = (id) => {
-  if (!confirm('????????')) return;
+  if (!confirm('确定删除此对话？')) return;
   
   conversations.value = conversations.value.filter(c => c.id !== id);
   saveConversations();
@@ -185,7 +185,7 @@ const updateConversationTitle = (firstMessage) => {
   if (!currentConvId.value) return;
   
   const conv = conversations.value.find(c => c.id === currentConvId.value);
-  if (conv && conv.title === '???') {
+  if (conv && conv.title === '新对话') {
     conv.title = firstMessage.content.substring(0, 20) + (firstMessage.content.length > 20 ? '...' : '');
     saveConversations();
   }
@@ -231,7 +231,7 @@ const sendMessage = async () => {
 
   try {
     const response = await askAI({
-      systemPrompt: '?????????? AI ????????????????????',
+      systemPrompt: '你是一个友好、专业的 AI 助手，用自然、流畅的语言回答用户的问题。',
       userMessage: userInput,
       provider: selectedProvider.value
     });
@@ -250,7 +250,7 @@ const sendMessage = async () => {
     messages.value.push({
       id: Date.now() + 1,
       role: 'assistant',
-      content: '?? ' + e.message,
+      content: '⚠️ ' + e.message,
       time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
     });
     saveCurrentMessages();
