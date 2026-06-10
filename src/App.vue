@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex h-screen bg-slate-50 overflow-hidden">
     <aside class="w-60 bg-slate-900 text-white flex flex-col shrink-0">
       <div class="p-5 border-b border-slate-700">
@@ -19,7 +19,11 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto">
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </main>
   </div>
 </template>
@@ -36,3 +40,19 @@ const navItems = [
   { path: '/settings', label: 'AI 脑核中心', icon: '🧠' },
 ]
 </script>
+
+
+<style scoped>
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.25s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+</style>
