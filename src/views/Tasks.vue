@@ -54,6 +54,11 @@ import { askAI } from '../services/ai';
 
 const showForm = ref(false);
 const form = ref({ title: '', quadrant: 'q2' });
+const taskVersion = ref(0);
+const tasks = computed(() => {
+  taskVersion.value;
+  return storage.get(KEYS.TASKS);
+});
 
 const quadrants = [
   { key: 'q1', label: '🔴 重要且紧急', borderClass: 'border-red-200 bg-red-50/50', textClass: 'text-red-700' },
@@ -62,26 +67,37 @@ const quadrants = [
   { key: 'q4', label: '🔵 不重要不紧急', borderClass: 'border-blue-200 bg-blue-50/50', textClass: 'text-blue-700' },
 ];
 
-const tasks = computed(() => storage.get(KEYS.TASKS));
-const getTasks = (quadrant) => tasks.value.filter(t => t.quadrant === quadrant);
+const refreshTasks = () => {
+  taskVersion.value++;
+};
+
+const getTasks = (quadrant) => {
+  return tasks.value.filter(t => t.quadrant === quadrant);
+};
 
 const addTask = () => {
   if (!form.value.title.trim()) return alert('请输入任务名称');
   storage.add(KEYS.TASKS, { ...form.value, done: false });
   form.value = { title: '', quadrant: 'q2' };
   showForm.value = false;
+  refreshTasks();
 };
 
 const toggleTask = (task) => {
   storage.update(KEYS.TASKS, task.id, { done: !task.done });
+  refreshTasks();
 };
 
 const deleteTask = (id) => {
-  if (confirm('确定删除此任务？')) storage.delete(KEYS.TASKS, id);
+  if (confirm('确定删除此任务？')) {
+    storage.delete(KEYS.TASKS, id);
+    refreshTasks();
+  }
 };
 
 const optimizeTask = async (task) => {
   storage.update(KEYS.TASKS, task.id, { optimizing: true });
+  refreshTasks();
   try {
     const res = await askAI({
       systemPrompt: '你是一个任务管理专家，请优化用户的任务描述，让它更具体、更可执行。返回简洁的优化建议。',
@@ -91,5 +107,6 @@ const optimizeTask = async (task) => {
   } catch (e) {
     storage.update(KEYS.TASKS, task.id, { aiOptimized: '⚠️ ' + e.message, optimizing: false });
   }
+  refreshTasks();
 };
 </script>

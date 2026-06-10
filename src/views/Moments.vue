@@ -1,9 +1,9 @@
 ﻿<template>
-  <div class="p-8 max-w-2xl mx-auto space-y-6">
+  <div class="p-8 max-w-4xl mx-auto space-y-6">
     <div class="border-b pb-4 flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-black text-slate-800">💬 朋友圈</h1>
-        <p class="text-xs text-slate-400 mt-1">分享你的生活瞬间</p>
+        <p class="text-xs text-slate-400 mt-1">记录你的生活瞬间</p>
       </div>
       <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
         {{ showForm ? '取消' : '+ 发布动态' }}
@@ -21,18 +21,34 @@
           </button>
         </div>
       </div>
-      <div class="flex items-center gap-2">
-        <input type="checkbox" v-model="form.isPrivate" id="privacy" class="accent-indigo-500" />
-        <label for="privacy" class="text-sm text-slate-600">🔒 设为隐私（需要密码查看）</label>
-      </div>
-      <div v-if="form.isPrivate">
-        <input v-model="form.password" type="password" placeholder="设置查看密码" class="w-full p-2.5 border rounded-xl text-sm outline-none" />
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <label class="text-sm text-slate-600">可见范围：</label>
+          <select v-model="form.isPrivate" class="p-2 border rounded-lg text-sm outline-none">
+            <option :value="false">公共</option>
+            <option :value="true">隐私（需要密码）</option>
+          </select>
+        </div>
       </div>
       <div>
         <label class="text-sm text-slate-600 block mb-2">上传图片（可选）</label>
         <input type="file" @change="handleImageUpload" accept="image/*" class="w-full text-sm" />
       </div>
-      <button @click="addMoment" class="px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition w-full">发布</button>
+      <div class="flex gap-2">
+        <button @click="showForm = false" class="flex-1 px-4 py-2 bg-slate-200 text-slate-600 text-sm rounded-xl hover:bg-slate-300 transition">取消</button>
+        <button @click="addMoment" class="flex-1 px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">发布</button>
+      </div>
+    </div>
+
+    <div v-if="showPasswordInput" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-2xl w-80 space-y-4">
+        <h3 class="font-bold text-slate-800">🔒 输入密码查看隐私内容</h3>
+        <input v-model="passwordInput" type="password" placeholder="请输入密码" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" @keyup.enter="submitPassword" />
+        <div class="flex gap-2">
+          <button @click="showPasswordInput = false" class="flex-1 px-4 py-2 bg-slate-200 text-slate-600 rounded-xl">取消</button>
+          <button @click="submitPassword" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-xl">确定</button>
+        </div>
+      </div>
     </div>
 
     <div class="flex gap-2 mb-4">
@@ -53,9 +69,12 @@
           <button @click="deleteMoment(m.id)" class="text-red-400 hover:text-red-600 text-xs">删除</button>
         </div>
         
-        <div v-if="m.isPrivate && !m.unlocked" class="mt-3">
-          <input v-model="m.inputPassword" type="password" placeholder="输入密码查看内容" class="w-full p-2 border rounded-lg text-sm" @keyup.enter="unlockMoment(m)" />
-          <button @click="unlockMoment(m)" class="mt-2 px-4 py-1 bg-indigo-600 text-white text-xs rounded-lg">解锁</button>
+        <div v-if="m.isPrivate && !isUnlocked && filter !== 'private'">
+          <p class="mt-3 text-sm text-slate-400">🔒 隐私内容，点击查看</p>
+        </div>
+        
+        <div v-else-if="m.isPrivate && !isUnlocked && filter === 'private'">
+          <div class="mt-3 text-sm text-slate-400">🔒 需要密码查看</div>
         </div>
         
         <div v-else>
@@ -69,7 +88,7 @@
           <div v-if="m.aiComment" class="mt-2 p-3 bg-purple-50 rounded-xl text-xs text-purple-700">🤖 {{ m.aiComment }}</div>
         </div>
       </div>
-      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-8">还没有动态，说点什么吧 🎤</div>
+      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-8">还没有动态，记录你的生活瞬间吧 🎤</div>
     </div>
   </div>
 </template>
@@ -79,51 +98,82 @@ import { ref, computed } from 'vue';
 import { storage, KEYS } from '../services/storage';
 import { askAI } from '../services/ai';
 
+const PRIVACY_PASSWORD_KEY = 'lb_privacy_password';
+
 const quickMoods = ['😊', '🤔', '😢', '🥳', '😤', '🥰'];
-const form = ref({ content: '', mood: '', isPrivate: false, password: '', image: '' });
+const form = ref({ content: '', mood: '', isPrivate: false, image: '' });
 const filter = ref('all');
+const showForm = ref(false);
+const showPasswordInput = ref(false);
+const passwordInput = ref('');
+const isUnlocked = ref(false);
+const privacyPassword = ref(localStorage.getItem(PRIVACY_PASSWORD_KEY) || '');
 
-const moments = computed(() => storage.get(KEYS.MOMENTS));
-
-const filteredMoments = computed(() => {
-  if (filter.value === 'public') return moments.value.filter(m => !m.isPrivate);
-  if (filter.value === 'private') return moments.value.filter(m => m.isPrivate);
-  return moments.value;
+const momentVersion = ref(0);
+const moments = computed(() => {
+  momentVersion.value;
+  return storage.get(KEYS.MOMENTS);
 });
 
-const addMoment = () => {
-  if (!form.value.content.trim()) return alert('请写点什么');
-  if (form.value.isPrivate && !form.value.password.trim()) return alert('隐私动态需要设置密码');
-  storage.add(KEYS.MOMENTS, { 
-    ...form.value, 
-    aiComment: '', 
-    aiLoading: false,
-    unlocked: false 
-  });
-  form.value = { content: '', mood: '', isPrivate: false, password: '', image: '' };
-};
+const filteredMoments = computed(() => {
+  let result = moments.value;
+  if (filter.value === 'public') result = result.filter(m => !m.isPrivate);
+  if (filter.value === 'private') result = result.filter(m => m.isPrivate);
+  return result;
+});
 
-const deleteMoment = (id) => {
-  if (confirm('确定删除此动态？')) storage.delete(KEYS.MOMENTS, id);
-};
-
-const unlockMoment = (moment) => {
-  if (moment.inputPassword === moment.password) {
-    moment.unlocked = true;
-    storage.update(KEYS.MOMENTS, moment.id, { unlocked: true });
+const submitPassword = () => {
+  if (passwordInput.value === privacyPassword.value) {
+    isUnlocked.value = true;
+    showPasswordInput.value = false;
+    passwordInput.value = '';
   } else {
     alert('密码错误');
   }
 };
 
+const refreshMoments = () => { momentVersion.value++; };
+
+const addMoment = () => {
+  if (!form.value.content.trim()) return alert('请写点什么');
+  
+  if (form.value.isPrivate) {
+    if (!privacyPassword.value) {
+      const newPwd = prompt('首次设置隐私密码：');
+      if (!newPwd) return;
+      privacyPassword.value = newPwd;
+      localStorage.setItem(PRIVACY_PASSWORD_KEY, newPwd);
+    }
+  }
+  
+  storage.add(KEYS.MOMENTS, { 
+    ...form.value, 
+    aiComment: '', 
+    aiLoading: false 
+  });
+  
+  form.value = { content: '', mood: '', isPrivate: false, image: '' };
+  showForm.value = false;
+  refreshMoments();
+};
+
+const deleteMoment = (id) => {
+  if (confirm('确定删除此动态？')) {
+    storage.delete(KEYS.MOMENTS, id);
+    refreshMoments();
+  }
+};
+
 const aiComment = async (moment) => {
   storage.update(KEYS.MOMENTS, moment.id, { aiLoading: true });
+  refreshMoments();
   try {
     const res = await askAI({
       systemPrompt: '你是一个风趣幽默的朋友，用轻松的语气回应对方的动态，就像朋友圈评论一样。',
       userMessage: moment.content
     });
     storage.update(KEYS.MOMENTS, moment.id, { aiComment: res, aiLoading: false });
+  refreshMoments();
   } catch (e) {
     storage.update(KEYS.MOMENTS, moment.id, { aiComment: '⚠️ ' + e.message, aiLoading: false });
   }

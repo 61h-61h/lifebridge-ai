@@ -54,18 +54,29 @@ const moods = ['😊', '😌', '😐', '😢', '😡', '🤔', '😴', '🥰'];
 const form = ref({ mood: '😊', title: '', content: '' });
 const aiReply = ref('');
 const aiLoading = ref(false);
+const diaryVersion = ref(0);
+const diaries = computed(() => {
+  diaryVersion.value;
+  return storage.get(KEYS.DIARIES);
+});
 
-const diaries = computed(() => storage.get(KEYS.DIARIES));
+const refreshDiaries = () => {
+  diaryVersion.value++;
+};
 
 const saveDiary = () => {
   if (!form.value.content.trim()) return alert('请写下你的感受');
   storage.add(KEYS.DIARIES, { ...form.value, aiReply: aiReply.value });
   form.value = { mood: '😊', title: '', content: '' };
   aiReply.value = '';
+  refreshDiaries();
 };
 
 const deleteDiary = (id) => {
-  if (confirm('确定删除这篇日记？')) storage.delete(KEYS.DIARIES, id);
+  if (confirm('确定删除这篇日记？')) {
+    storage.delete(KEYS.DIARIES, id);
+    refreshDiaries();
+  }
 };
 
 const aiComfort = async () => {

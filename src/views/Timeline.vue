@@ -25,7 +25,10 @@
         <label class="text-sm text-slate-600 block mb-2">上传图片（可选）</label>
         <input type="file" @change="handleImageUpload" accept="image/*" class="w-full text-sm" />
       </div>
-      <button @click="addMilestone" class="px-6 py-2 bg-slate-900 text-white text-sm rounded-xl hover:bg-slate-800 transition">确认添加</button>
+      <div class="flex gap-2">
+        <button @click="showForm = false" class="flex-1 px-4 py-2 bg-slate-200 text-slate-600 text-sm rounded-xl hover:bg-slate-300 transition">取消</button>
+        <button @click="addMilestone" class="flex-1 px-6 py-2 bg-slate-900 text-white text-sm rounded-xl hover:bg-slate-800 transition">确认添加</button>
+      </div>
     </div>
 
     <div class="space-y-2 mb-6">
@@ -39,7 +42,7 @@
     </div>
 
     <div class="relative pl-8 border-l-2 border-indigo-200 space-y-6">
-      <div v-for="m in milestones" :key="m.id" class="relative">
+      <div v-for="m in milestonesList" :key="m.id" class="relative">
         <div class="absolute -left-[41px] top-1 w-4 h-4 rounded-full border-2 border-indigo-400 bg-white"></div>
         <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
           <div class="flex justify-between items-start">
@@ -54,7 +57,7 @@
           <img v-if="m.image" :src="m.image" class="mt-3 rounded-xl max-h-60 w-full object-cover" />
         </div>
       </div>
-      <div v-if="milestones.length === 0" class="text-center text-slate-400 text-sm py-8">还没有里程碑，记录你的第一个闪光时刻 ✨</div>
+      <div v-if="milestonesList.length === 0" class="text-center text-slate-400 text-sm py-8">还没有里程碑，记录你的第一个闪光时刻 ✨</div>
     </div>
   </div>
 </template>
@@ -68,7 +71,11 @@ const form = ref({ title: '', date: '', description: '', category: 'life', image
 const activeReminders = ref([]);
 const notifiedMilestones = ref(new Set());
 
-const milestones = computed(() => storage.get(KEYS.MILESTONES));
+const milestoneVersion = ref(0);
+const milestonesList = computed(() => {
+  milestoneVersion.value;
+  return storage.get(KEYS.MILESTONES);
+});
 
 const categoryIcon = (cat) => {
   const map = { career: '💼', study: '📚', life: '🏠', relationship: '❤️', health: '💪' };
@@ -103,8 +110,9 @@ const checkMilestones = () => {
   const now = new Date();
   now.setHours(0, 0, 0, 0);
   const reminders = [];
+  const milestones = storage.get(KEYS.MILESTONES);
   
-  milestones.value.forEach(m => {
+  milestones.forEach(m => {
     const target = new Date(m.date);
     target.setHours(0, 0, 0, 0);
     const diff = Math.floor((now - target) / (1000 * 60 * 60 * 24));
@@ -146,17 +154,21 @@ const handleImageUpload = (event) => {
   }
 };
 
+const refreshMilestones = () => { milestoneVersion.value++; };
+
 const addMilestone = () => {
   if (!form.value.title.trim() || !form.value.date) return alert('请填写标题和日期');
   storage.add(KEYS.MILESTONES, { ...form.value });
   form.value = { title: '', date: '', description: '', category: 'life', image: '' };
   showForm.value = false;
+  refreshMilestones();
   checkMilestones();
 };
 
 const deleteMilestone = (id) => {
   if (confirm('确定删除此里程碑？')) {
     storage.delete(KEYS.MILESTONES, id);
+    refreshMilestones();
     checkMilestones();
   }
 };
