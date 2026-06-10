@@ -5,12 +5,11 @@
         <h1 class="text-2xl font-black text-slate-800">💬 朋友圈</h1>
         <p class="text-xs text-slate-400 mt-1">记录你的生活瞬间</p>
       </div>
-      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
+      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">
         {{ showForm ? '取消' : '+ 发布动态' }}
       </button>
     </div>
 
-    <transition name="form">
     <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none"></textarea>
       <div class="flex justify-between items-center">

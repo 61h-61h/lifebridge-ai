@@ -5,12 +5,11 @@
         <h1 class="text-2xl font-black text-slate-800">✅ 四象限任务板</h1>
         <p class="text-xs text-slate-400 mt-1">按照重要与紧急程度管理任务</p>
       </div>
-      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
+      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">
         {{ showForm ? '取消' : '+ 新增任务' }}
       </button>
     </div>
 
-    <transition name="form">
     <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <input v-model="form.title" placeholder="任务名称" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
       <select v-model="form.quadrant" class="w-full p-3 border rounded-xl text-sm outline-none">
@@ -25,7 +24,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div v-for="q in quadrants" :key="q.key" class="p-4 rounded-2xl border-2 min-h-[200px]" :class="q.borderClass">
         <h2 class="font-bold text-sm mb-3" :class="q.textClass">{{ q.label }}</h2>
-        <transition-group name="list" tag="div" class="space-y-2">
+        <div class="space-y-2">
           <div v-for="t in getTasks(q.key)" :key="t.id"
             class="p-3 bg-white rounded-xl text-xs shadow-sm flex items-start gap-2"
             :class="{ 'opacity-50 line-through': t.done }">

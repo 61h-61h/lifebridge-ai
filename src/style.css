@@ -6,81 +6,17 @@
 
 .handwritten { font-family: 'Ma Shan Zheng', cursive; }
 
-/* ===== 全局按钮过渡 ===== */
-button, a, [role="button"] {
+/* 全局点击动画 */
+button, a, [role="button"], .clickable {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* ===== 按钮点击回弹 ===== */
-button:active:not(:disabled),
-a:active:not(:disabled) {
-  transform: scale(0.93);
+button:active:not(:disabled), 
+a:active:not(:disabled), 
+[role="button"]:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
-/* ===== 操作按钮专属动画 ===== */
-button.btn-add:active,
-.btn-add:active {
-  animation: btnPop 0.35s ease;
-}
-button.btn-save:active,
-.btn-save:active {
-  animation: btnPulse 0.5s ease;
-}
-button.btn-cancel:active,
-.btn-cancel:active {
-  animation: btnFadeOut 0.25s ease;
-}
-button.btn-publish:active,
-.btn-publish:active {
-  animation: btnPop 0.4s ease;
-}
-button.btn-delete:active,
-.btn-delete:active {
-  animation: btnShake 0.4s ease;
-}
-
-@keyframes btnPop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(0.88); }
-  70%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
-}
-@keyframes btnPulse {
-  0%   { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5); }
-  70%  { box-shadow: 0 0 0 14px rgba(99, 102, 241, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
-}
-@keyframes btnFadeOut {
-  0%   { opacity: 1; }
-  100% { opacity: 0.5; }
-}
-@keyframes btnShake {
-  0%, 100% { transform: translateX(0); }
-  15%      { transform: translateX(-5px); }
-  30%      { transform: translateX(5px); }
-  45%      { transform: translateX(-4px); }
-  60%      { transform: translateX(4px); }
-  75%      { transform: translateX(-2px); }
-  90%      { transform: translateX(2px); }
-}
-
-/* ===== 表单面板弹出动画 ===== */
-.form-enter-active {
-  animation: panelIn 0.3s ease both;
-}
-.form-leave-active {
-  animation: panelOut 0.2s ease both;
-}
-@keyframes panelIn {
-  from { opacity: 0; transform: translateY(-16px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes panelOut {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateY(-16px) scale(0.96); }
-}
-
-/* ===== 卡片悬停 ===== */
+/* 卡片悬停动画 */
 .hover-card {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -89,26 +25,26 @@ button.btn-delete:active,
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
-/* ===== 列表交错入场 ===== */
-.stagger-in > * {
-  animation: fadeIn 0.3s ease both;
+/* 渐进显示 */
+.fade-in {
+  animation: fadeIn 0.4s ease both;
 }
-.stagger-in > *:nth-child(1) { animation-delay: 0.04s; }
-.stagger-in > *:nth-child(2) { animation-delay: 0.08s; }
-.stagger-in > *:nth-child(3) { animation-delay: 0.12s; }
-.stagger-in > *:nth-child(4) { animation-delay: 0.16s; }
-.stagger-in > *:nth-child(5) { animation-delay: 0.20s; }
-.stagger-in > *:nth-child(6) { animation-delay: 0.24s; }
-.stagger-in > *:nth-child(7) { animation-delay: 0.28s; }
-.stagger-in > *:nth-child(8) { animation-delay: 0.32s; }
-.stagger-in > *:nth-child(9) { animation-delay: 0.36s; }
-.stagger-in > *:nth-child(10) { animation-delay: 0.40s; }
-
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== 列表项进出 ===== */
-.list-enter-active { animation: fadeIn 0.3s ease both; }
-.list-leave-active { animation: fadeIn 0.2s ease both reverse; }
+/* 列表项交错动画 */
+.stagger-in > * {
+  animation: fadeIn 0.3s ease both;
+}
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.10s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.20s; }
+.stagger-in > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-in > *:nth-child(6) { animation-delay: 0.30s; }
+.stagger-in > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-in > *:nth-child(8) { animation-delay: 0.40s; }
+.stagger-in > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-in > *:nth-child(10) { animation-delay: 0.50s; }

@@ -5,12 +5,11 @@
         <h1 class="text-2xl font-black text-slate-800">⏳ 时光纪念馆</h1>
         <p class="text-xs text-slate-400 mt-1">记录人生中每一个闪光的里程碑</p>
       </div>
-      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
+      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">
         {{ showForm ? '取消' : '+ 新增里程碑' }}
       </button>
     </div>
 
-    <transition name="form">
     <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <input v-model="form.title" placeholder="里程碑标题" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
       <input v-model="form.date" type="date" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
