@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="p-8 max-w-3xl mx-auto space-y-6">
     <div class="border-b pb-4">
       <h1 class="text-2xl font-black text-slate-800 handwritten">📖 情绪日记与树洞</h1>
@@ -20,7 +20,7 @@
         <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-purple-100 text-purple-700 text-xs rounded-xl hover:bg-purple-200 transition disabled:opacity-50">
           {{ aiLoading ? 'AI 倾听中...' : '🤖 让 AI 回应' }}
         </button>
-        <button @click="saveDiary" class="px-6 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">保存日记</button>
+        <button @click="saveDiary" class="px-6 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition btn-save">保存日记</button>
       </div>
       <div v-if="aiReply" class="p-4 bg-purple-50 rounded-xl text-sm text-purple-800 leading-relaxed whitespace-pre-wrap">{{ aiReply }}</div>
     </div>
@@ -34,7 +34,7 @@
           </div>
           <div class="flex items-center gap-2">
             <span class="text-[10px] text-slate-400">{{ d.createdAt }}</span>
-            <button @click="deleteDiary(d.id)" class="text-red-400 hover:text-red-600 text-xs">删除</button>
+            <button @click="deleteDiary(d.id)" class="text-red-400 hover:text-red-600 text-xs btn-delete">删除</button>
           </div>
         </div>
         <p class="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{{ d.content }}</p>

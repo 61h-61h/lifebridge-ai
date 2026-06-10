@@ -10,6 +10,7 @@
       </button>
     </div>
 
+    <transition name="form">
     <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <input v-model="form.title" placeholder="任务名称" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
       <select v-model="form.quadrant" class="w-full p-3 border rounded-xl text-sm outline-none">
@@ -24,7 +25,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div v-for="q in quadrants" :key="q.key" class="p-4 rounded-2xl border-2 min-h-[200px]" :class="q.borderClass">
         <h2 class="font-bold text-sm mb-3" :class="q.textClass">{{ q.label }}</h2>
-        <div class="space-y-2">
+        <transition-group name="list" tag="div" class="space-y-2">
           <div v-for="t in getTasks(q.key)" :key="t.id"
             class="p-3 bg-white rounded-xl text-xs shadow-sm flex items-start gap-2"
             :class="{ 'opacity-50 line-through': t.done }">

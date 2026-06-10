@@ -10,6 +10,7 @@
       </button>
     </div>
 
+    <transition name="form">
     <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none"></textarea>
       <div class="flex justify-between items-center">

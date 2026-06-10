@@ -10,6 +10,7 @@
       </button>
     </div>
 
+    <transition name="form">
     <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <input v-model="form.title" placeholder="里程碑标题" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
       <input v-model="form.date" type="date" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
