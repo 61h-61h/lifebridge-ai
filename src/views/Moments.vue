@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="p-8 max-w-4xl mx-auto space-y-6">
+  <div class="p-4 md:p-8 max-w-4xl mx-auto space-y-4 md:space-y-6">
     <div class="border-b pb-4 flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-black text-slate-800">💬 朋友圈</h1>
@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+    <div v-if="showForm" class="bg-white p-4 md:p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none"></textarea>
       <div class="flex justify-between items-center">
         <div class="flex gap-1">
@@ -41,7 +41,7 @@
     </div>
 
     <div v-if="showPasswordInput" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div class="bg-white p-6 rounded-2xl w-80 space-y-4">
+      <div class="bg-white p-4 md:p-6 rounded-2xl w-[90vw] max-w-80 space-y-4">
         <h3 class="font-bold text-slate-800">🔒 输入密码查看隐私内容</h3>
         <input v-model="passwordInput" type="password" placeholder="请输入密码" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" @keyup.enter="submitPassword" />
         <div class="flex gap-2">
@@ -58,7 +58,7 @@
     </div>
 
     <div class="space-y-4">
-      <div v-for="m in filteredMoments" :key="m.id" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+      <div v-for="m in filteredMoments" :key="m.id" class="bg-white p-4 md:p-5 rounded-2xl border border-slate-100 shadow-sm">
         <div class="flex justify-between items-start">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs">我</div>

@@ -1,11 +1,11 @@
 <template>
-  <div class="p-8 max-w-3xl mx-auto space-y-6">
+  <div class="p-4 md:p-8 max-w-3xl mx-auto space-y-4 md:space-y-6">
     <div class="border-b pb-4">
-      <h1 class="text-2xl font-black text-slate-800 handwritten">📖 情绪日记与树洞</h1>
+      <h1 class="text-xl md:text-2xl font-black text-slate-800 handwritten">📖 情绪日记与树洞</h1>
       <p class="text-xs text-slate-400 mt-1">记录心情，AI 倾听你的心声</p>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+    <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm space-y-3 md:space-y-4">
       <div class="flex items-center gap-2">
         <span class="text-sm font-semibold text-slate-600">此刻心情：</span>
         <button v-for="m in moods" :key="m" @click="form.mood = m"

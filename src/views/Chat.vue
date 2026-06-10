@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen bg-slate-50 overflow-hidden">
+  <div class="flex h-full bg-slate-50 overflow-hidden">
     <!-- 左侧：对话主区域 -->
     <div class="flex-1 flex flex-col min-w-0">
-      <div class="p-6 border-b bg-white flex justify-between items-center">
+      <div class="p-3 md:p-6 border-b bg-white flex justify-between items-center">
         <div>
           <h1 class="text-xl font-black text-slate-800">💬 AI 对话</h1>
           <p class="text-xs text-slate-400 mt-1">与 AI 自由交流，选择不同的智能大脑</p>
@@ -14,20 +14,20 @@
         </button>
       </div>
 
-      <div class="p-4 flex gap-2 flex-wrap bg-slate-50 border-b">
+      <div class="p-2 md:p-4 flex gap-1.5 md:gap-2 flex-wrap bg-slate-50 border-b">
         <button v-for="prov in providers" :key="prov.key" @click="selectProvider(prov.key)"
           :class="selectedProvider === prov.key ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-100 border'"
-          class="px-4 py-2 rounded-xl text-sm font-medium transition border">
+          class="px-2.5 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-medium transition border">
           {{ prov.icon }} {{ prov.name }}
         </button>
       </div>
 
-      <div class="flex-1 overflow-y-auto p-6" ref="chatContainer">
+      <div class="flex-1 overflow-y-auto p-3 md:p-6" ref="chatContainer">
         <div v-if="messages.length === 0" class="text-center text-slate-400 py-20">
           开始与 AI 对话吧 👋
         </div>
         <div class="space-y-4 max-w-3xl mx-auto">
-          <div v-for="msg in messages" :key="msg.id" :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'" class="max-w-[80%]">
+          <div v-for="msg in messages" :key="msg.id" :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'" class="max-w-[90%] md:max-w-[80%]">
             <div :class="msg.role === 'user' ? 'bg-indigo-500 text-white' : 'bg-white border shadow-sm'" class="p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap">
               {{ msg.content }}
             </div>
@@ -41,7 +41,7 @@
         </div>
       </div>
       
-      <div class="p-4 border-t bg-white">
+      <div class="p-3 md:p-4 border-t bg-white">
         <div class="flex gap-2 max-w-3xl mx-auto">
           <textarea v-model="input" rows="2" placeholder="输入消息..." class="flex-1 p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none" @keyup.ctrl.enter="sendMessage"></textarea>
           <button @click="sendMessage" :disabled="loading || !input.trim()" class="px-6 py-3 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition disabled:opacity-50 self-end">
@@ -54,7 +54,7 @@
 
     <!-- 右侧：历史对话面板 -->
     <transition name="slide">
-      <aside v-if="showHistory" class="w-72 bg-white border-l border-slate-200 flex flex-col shrink-0">
+      <aside v-if="showHistory" class="w-full md:w-72 bg-white border-l border-slate-200 flex flex-col shrink-0 absolute md:static inset-0 z-10">
         <div class="p-4 border-b flex justify-between items-center">
           <h2 class="font-bold text-slate-800">💬 对话历史</h2>
           <button @click="showHistory = false" class="text-slate-400 hover:text-slate-600 text-lg leading-none">&times;</button>

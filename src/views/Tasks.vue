@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="p-8 space-y-6">
+  <div class="p-4 md:p-8 space-y-4 md:space-y-6">
     <div class="border-b pb-4 flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-black text-slate-800">✅ 四象限任务板</h1>
@@ -22,11 +22,11 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div v-for="q in quadrants" :key="q.key" class="p-4 rounded-2xl border-2 min-h-[200px]" :class="q.borderClass">
+      <div v-for="q in quadrants" :key="q.key" class="p-3 md:p-4 rounded-2xl border-2 min-h-[150px] md:min-h-[200px]" :class="q.borderClass">
         <h2 class="font-bold text-sm mb-3" :class="q.textClass">{{ q.label }}</h2>
         <div class="space-y-2">
           <div v-for="t in getTasks(q.key)" :key="t.id"
-            class="p-3 bg-white rounded-xl text-xs shadow-sm flex items-start gap-2"
+            class="p-2.5 md:p-3 bg-white rounded-xl text-xs shadow-sm flex items-start gap-2"
             :class="{ 'opacity-50 line-through': t.done }">
             <input type="checkbox" :checked="t.done" @change="toggleTask(t)" class="mt-0.5" />
             <div class="flex-1">

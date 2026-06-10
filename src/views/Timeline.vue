@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="p-8 max-w-3xl mx-auto space-y-6">
+  <div class="p-4 md:p-8 max-w-3xl mx-auto space-y-4 md:space-y-6">
     <div class="border-b pb-4 flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-black text-slate-800">⏳ 时光纪念馆</h1>
@@ -10,7 +10,7 @@
       </button>
     </div>
 
-    <div v-if="showForm" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+    <div v-if="showForm" class="bg-white p-4 md:p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
       <input v-model="form.title" placeholder="里程碑标题" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
       <input v-model="form.date" type="date" class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300" />
       <textarea v-model="form.description" rows="3" placeholder="描述这个里程碑..." class="w-full p-3 border rounded-xl text-sm outline-none focus:ring-1 focus:ring-indigo-300 resize-none"></textarea>
@@ -44,7 +44,7 @@
     <div class="relative pl-8 border-l-2 border-indigo-200 space-y-6">
       <div v-for="m in milestonesList" :key="m.id" class="relative">
         <div class="absolute -left-[41px] top-1 w-4 h-4 rounded-full border-2 border-indigo-400 bg-white"></div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
+        <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition">
           <div class="flex justify-between items-start">
             <div>
               <span class="text-xs font-semibold text-indigo-600">{{ categoryIcon(m.category) }} {{ formatDate(m.date) }}</span>

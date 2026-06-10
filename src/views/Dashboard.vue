@@ -1,8 +1,8 @@
 ﻿<template>
-  <div class="p-8 space-y-6">
-    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-8 rounded-3xl shadow-lg">
-      <h1 class="text-3xl font-black">早安，生活家 🌅</h1>
-      <p class="mt-2 text-white/80 text-sm">{{ today }}</p>
+  <div class="p-4 md:p-8 space-y-4 md:space-y-6">
+    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-lg">
+      <h1 class="text-2xl md:text-3xl font-black">早安，生活家 🌅</h1>
+      <p class="mt-1 md:mt-2 text-white/80 text-xs md:text-sm">{{ today }}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
