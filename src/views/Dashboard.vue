@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6">
+  <div class="dashboard-root space-y-6">
     <div class="bg-gradient-to-br from-slate-700 to-slate-900 text-white p-6 md:p-10 rounded-3xl shadow-lg">
       <h1 class="text-2xl md:text-3xl font-bold font-heading">{{ greeting.text }}</h1>
       <p class="mt-2 text-white/70 text-sm md:text-base">{{ greeting.sub }}</p>
@@ -8,7 +8,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div v-for="card in stats" :key="card.label" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer hover:scale-[1.02]" @click="$router.push(card.to)">
-        <div class="text-2xl">{{ card.icon }}</div>
+        <component :is="card.icon" :size="28" class="text-slate-400 group-hover:text-slate-600 transition-colors mb-2" />
         <div class="mt-2 text-2xl font-bold text-slate-800 font-heading">{{ card.value }}</div>
         <div class="text-xs text-slate-400 mt-1">{{ card.label }}</div>
       </div>
@@ -48,7 +48,7 @@
   </div>
 </template>
 <script setup>
-import { BookHeart, CheckSquare, Clock, Sparkles } from 'lucide-vue-next';
+import { BookHeart, CheckSquare, Clock, Sparkles, FileText, ListTodo, Milestone } from 'lucide-vue-next';
 import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
 const now = new Date(); const hour = now.getHours();
 const greeting = hour < 6 ? { text:'夜深了，生活家 🌙',sub:'好好休息，明天会更好' } : hour < 12 ? { text:'早安，生活家 ☀️',sub:'新的一天，元气满满' } : hour < 14 ? { text:'午安，生活家 ☀️',sub:'中场休息，继续前行' } : hour < 18 ? { text:'下午好，生活家 🌤️',sub:'时光正好，不负韶华' } : { text:'晚安，生活家 🌙',sub:'回顾今日，安然入梦' };

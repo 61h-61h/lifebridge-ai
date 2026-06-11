@@ -9,7 +9,7 @@
       <button v-for="prov in providers" :key="prov.key" @click="selectProvider(prov.key)"
         :class="selectedProvider === prov.key ? 'bg-slate-800 text-white' : 'bg-white text-slate-500 hover:bg-slate-50 border border-slate-100'"
         class="px-3 md:px-5 py-2 rounded-xl text-xs md:text-sm transition hover:scale-[1.02] font-body min-h-[40px]">
-        {{ prov.icon }} {{ prov.name }}
+        <component :is='prov.icon' :size='14' /> {{ prov.name }}
       </button>
     </div>
 
@@ -85,7 +85,7 @@
   </div>
 </template>
 <script setup>
-import { ref, nextTick, onMounted } from 'vue'; import { askAI } from '../services/ai';
+import { ref, nextTick, onMounted } from 'vue'; import { askAI } from '../services/ai'; import { MessageCircle, Send, History, Plus, Cpu, Zap, Sparkles, Bot, Brain } from 'lucide-vue-next';
 const CONVERSATIONS_KEY = 'lb_conversations'; const CURRENT_CONV_KEY = 'lb_current_conversation';
 const providers = [{key:'zhipu',name:'智谱清言',icon:'🧥'},{key:'deepseek',name:'DeepSeek',icon:'💻'},{key:'qwen',name:'通义千问',icon:'👰'},{key:'doubao',name:'豆包',icon:'🪰'},{key:'yuanbao',name:'腾讯元宝',icon:'💂'}];
 const selectedProvider = ref('zhipu'); const input = ref(''); const messages = ref([]); const loading = ref(false);
@@ -103,9 +103,9 @@ const sendMessage = async () => { if(!input.value.trim()||loading.value) return;
 onMounted(() => { loadConversations(); });
 </script>
 <style scoped>
-.chat-root { height: calc(100dvh - 8rem); }
+.chat-root { height: calc(100dvh - 8rem); max-width: 900px; margin: 0 auto; padding: 0 0.5rem; }
 @media (min-width: 768px) {
-  .chat-root { height: calc(100dvh - 5rem); }
+  .chat-root { height: calc(100dvh - 5rem); padding: 0 1rem; }
 }
 .dropdown-enter-active{transition:all 0.18s ease}
 .dropdown-leave-active{transition:all 0.12s ease}

@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-2xl mx-auto space-y-10">
+  <div class="timeline-root max-w-2xl mx-auto space-y-10">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">时光纪念馆</h1>
       <p class="text-sm text-slate-400 mt-2">记录人生中每一个闪光的里程碑</p>
@@ -70,7 +70,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue'; import { storage, KEYS } from '../services/storage';
+import { ref, computed, onMounted } from 'vue'; import { storage, KEYS } from '../services/storage'; import { Plus, X, Trash2, Gift } from 'lucide-vue-next';
 const showForm = ref(false); const form = ref({title:'',date:'',description:'',category:'life',image:''});
 const activeReminders = ref([]); const notifiedMilestones = ref(new Set());
 const milestoneVersion = ref(0); const milestonesList = computed(() => { milestoneVersion.value; return storage.get(KEYS.MILESTONES); });

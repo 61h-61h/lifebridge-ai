@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-2xl mx-auto space-y-10">
+  <div class="settings-root max-w-2xl mx-auto space-y-10">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">AI 脑核中心</h1>
       <p class="text-sm text-slate-400 mt-2">配置大模型密钥，数据纯前端存储，绝对安全</p>
@@ -38,7 +38,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'; import { storage } from '../services/storage';
+import { ref, onMounted } from 'vue'; import { storage } from '../services/storage'; import { Cpu, Key, Server, Save, Shield } from 'lucide-vue-next';
 const keys = ref({}); const active = ref('zhipu');
 const providerNames = { zhipu:'智谱清言',deepseek:'DeepSeek',qwen:'通义千问',doubao:'字节豆包',yuanbao:'腾讯元宝' };
 onMounted(() => { const c=storage.getAIConfig(); keys.value=c.keys; active.value=c.active; if(!keys.value.zhipu){ keys.value.zhipu='8fcff9314cc0435d9887abacad4d3d81.QwAwgrEnWTnttD4y'; storage.saveAIConfig(keys.value,active.value); } });

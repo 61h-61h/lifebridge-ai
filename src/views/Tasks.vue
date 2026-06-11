@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-8">
+  <div class="tasks-root space-y-8">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">四象限任务板</h1>
       <p class="text-sm text-slate-400 mt-2">按照重要与紧急程度管理任务</p>
@@ -50,7 +50,7 @@
             </div>
             <div class="flex gap-2 shrink-0">
               <button @click="optimizeTask(t)" :disabled="t.optimizing"
-                class="text-slate-400 hover:text-slate-600 text-xs min-w-[36px] min-h-[36px] transition">{{ t.optimizing ? '...' : 'AI' }}</button>
+                class="text-indigo-400 hover:text-indigo-600 text-xs min-w-[40px] min-h-[40px] flex items-center justify-center transition-colors hover:bg-indigo-50 rounded-xl"><Sparkles :size="14" /></button>
               <button @click="deleteTask(t.id)"
                 class="text-rose-300 hover:text-rose-500 text-xs btn-delete min-w-[36px] min-h-[36px] transition">✕</button>
             </div>
@@ -62,7 +62,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
+import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai'; import { Plus, X, Sparkles, Trash2 } from 'lucide-vue-next';
 const showForm = ref(false); const form = ref({title:'',quadrant:'q2',useAI:false}); const taskVersion = ref(0); const taskLoading = ref(false);
 const tasks = computed(() => { taskVersion.value; return storage.get(KEYS.TASKS); });
 const quadrants = [

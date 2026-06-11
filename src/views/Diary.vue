@@ -57,7 +57,7 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
+import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai'; import { Sparkles, Trash2 } from 'lucide-vue-next';
 const moods = ['😉','😊','😓','😩','😨','😹','😾','😀'];
 const form = ref({ mood:'😉',title:'',content:'' }); const aiReply = ref(''); const aiLoading = ref(false);
 const diaryVersion = ref(0); const diaries = computed(() => { diaryVersion.value; return storage.get(KEYS.DIARIES); });
@@ -66,3 +66,7 @@ const saveDiary = () => { if(!form.value.content.trim()) return alert('请写下
 const deleteDiary = (id) => { if(confirm('确定删除？')){ storage.delete(KEYS.DIARIES,id); refreshDiaries(); } };
 const aiComfort = async () => { if(!form.value.content.trim()) return alert('请先写下感受'); aiLoading.value=true; try{ const r=await askAI({systemPrompt:'你是一个温暖的心理倾听者，用简短的话安慰鼓励对方，语气亲切。',userMessage:'心情'+form.value.mood+'：'+form.value.content}); aiReply.value=r; }catch(e){aiReply.value='⚠️ '+e.message;} aiLoading.value=false; };
 </script>
+<style scoped>
+.diary-root { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+@media (min-width: 768px) { .diary-root { padding: 2.5rem 2rem; } }
+</style>

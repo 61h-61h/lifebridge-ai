@@ -10,7 +10,7 @@
   <div v-else class="flex flex-col md:flex-row h-dvh overflow-hidden bg-[#FDFCF8]">
 
     <header class="md:hidden flex items-center justify-between bg-white px-4 py-3 shrink-0 z-20 border-b border-slate-100">
-      <h1 class="text-sm font-bold text-slate-800 font-heading">LifeBridge</h1>
+      <h1 class="text-sm font-bold text-slate-800 font-heading tracking-tight">LifeBridge<span class="text-slate-400 font-normal">.</span></h1>
       <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-slate-600 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
         <Menu v-if="!mobileMenuOpen" :size="20" />
         <X v-else :size="20" />
@@ -23,8 +23,8 @@
       :class="[mobileMenuOpen ? 'translate-x-0' : '-translate-x-full', 'md:translate-x-0']"
       class="w-64 bg-white border-r border-slate-100 flex flex-col shrink-0 fixed md:static inset-y-0 left-0 z-40 transition-transform duration-300">
       <div class="p-5 border-b border-slate-100">
-        <div class="w-10 h-10 bg-gradient-to-br from-slate-600 to-slate-800 rounded-xl flex items-center justify-center text-white">
-          <Sparkles :size="18" />
+        <div class="w-11 h-11 bg-gradient-to-br from-indigo-500 to-slate-700 rounded-2xl flex items-center justify-center text-white shadow-md">
+          <Sparkles :size="20" />
         </div>
         <div class="mt-3 text-sm font-bold text-slate-800 font-heading">LifeBridge AI</div>
         <div class="text-[11px] text-slate-400 mt-0.5">个人生活助理空间</div>
@@ -64,7 +64,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { LayoutDashboard, BookHeart, CheckSquare, Clock, Users, Wrench, MessageCircle, Cpu, Sparkles, Menu, X } from 'lucide-vue-next';
+import { LayoutDashboard, BookHeart, CheckSquare, Clock, Users, Wrench, MessageCircle, Cpu, Sparkles, Menu, X, Heart } from 'lucide-vue-next';
 const route = useRoute();
 const mobileMenuOpen = ref(false);
 const isStandalone = computed(() => route.path === '/' || route.path.startsWith('/info'));
