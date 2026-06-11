@@ -1,47 +1,32 @@
 <template>
   <div class="space-y-6">
     <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
-      <div><h1 class="text-2xl font-bold text-slate-800">👰 朋友圈</h1><p class="text-xs text-slate-400 mt-1">记录你的生活瞬间</p></div>
-      <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">{{ showForm ? '取消' : '+ 发布动态' }}</button>
+      <div><h1 class="text-2xl font-bold text-slate-800 font-heading">👰 朋友圈</h1><p class="text-sm text-slate-400 mt-1">记录你的生活瞬间</p></div>
+      <button @click="showForm = !showForm" class="px-5 py-2.5 bg-primary-600 text-white text-sm rounded-xl hover:bg-primary-700 hover:scale-[1.02] transition font-body min-h-[44px]" :class="showForm ? 'btn-cancel' : 'btn-add'">{{ showForm ? '取消' : '+ 发布动态' }}</button>
     </div>
-
     <div v-if="showForm" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm space-y-3">
-      <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 resize-none placeholder:text-slate-300"></textarea>
-      <div class="flex gap-1"><button v-for="m in quickMoods" :key="m" @click="form.mood = form.mood === m ? '' : m" class="text-lg px-1.5 py-0.5 rounded-lg transition" :class="form.mood === m ? 'bg-indigo-50' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button></div>
-      <div class="flex items-center gap-4"><label class="text-sm text-slate-600">可见范围：</label><select v-model="form.isPrivate" class="p-2 bg-slate-50 rounded-lg text-sm outline-none text-slate-700"><option :value="false">公共</option><option :value="true">隐私</option></select></div>
+      <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary-200 resize-none placeholder:text-slate-300"></textarea>
+      <div class="flex gap-1"><button v-for="m in quickMoods" :key="m" @click="form.mood = form.mood === m ? '' : m" class="text-lg px-2 py-1 rounded-lg transition min-w-[44px] min-h-[44px] flex items-center justify-center" :class="form.mood === m ? 'bg-primary-50' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button></div>
+      <div class="flex items-center gap-4"><label class="text-sm text-slate-600">可见范围：</label><select v-model="form.isPrivate" class="p-2 bg-slate-50 rounded-xl text-sm outline-none text-slate-700"><option :value="false">公共</option><option :value="true">隐私</option></select></div>
       <div><label class="text-sm text-slate-600 block mb-2">上传图片</label><input type="file" @change="handleImageUpload" accept="image/*" class="w-full text-sm text-slate-400" /></div>
-      <div class="flex gap-2"><button @click="showForm = false" class="flex-1 px-4 py-2 bg-slate-100 text-slate-600 text-sm rounded-xl hover:bg-slate-200 transition btn-cancel">取消</button><button @click="addMoment" class="flex-1 px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition btn-publish">发布</button></div>
+      <div class="flex gap-2"><button @click="showForm = false" class="flex-1 px-4 py-2.5 bg-slate-100 text-slate-600 text-sm rounded-xl hover:bg-slate-200 transition btn-cancel font-body">取消</button><button @click="addMoment" class="flex-1 px-5 py-2.5 bg-primary-600 text-white text-sm rounded-xl hover:bg-primary-700 hover:scale-[1.02] transition btn-publish font-body">发布</button></div>
     </div>
-
-    <!-- Filter tabs -->
     <div class="flex gap-2">
-      <button @click="filter='all'" :class="filter==='all'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-3 py-1.5 rounded-full text-xs transition hover:scale-105">全部</button>
-      <button @click="filter='public'" :class="filter==='public'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-3 py-1.5 rounded-full text-xs transition hover:scale-105">公共</button>
-      <button @click="filter='private'" :class="filter==='private'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-3 py-1.5 rounded-full text-xs transition hover:scale-105">🔀 隐私</button>
+      <button @click="filter='all'" :class="filter==='all'?'bg-primary-50 text-primary-600':'bg-white text-slate-500 border border-slate-100'" class="px-4 py-2 rounded-full text-sm transition hover:scale-[1.02] min-h-[36px]">全部</button>
+      <button @click="filter='public'" :class="filter==='public'?'bg-primary-50 text-primary-600':'bg-white text-slate-500 border border-slate-100'" class="px-4 py-2 rounded-full text-sm transition hover:scale-[1.02] min-h-[36px]">公共</button>
+      <button @click="filter='private'" :class="filter==='private'?'bg-primary-50 text-primary-600':'bg-white text-slate-500 border border-slate-100'" class="px-4 py-2 rounded-full text-sm transition hover:scale-[1.02] min-h-[36px]">🔀 隐私</button>
     </div>
-
-    <!-- Moments list -->
     <div class="space-y-4">
       <div v-for="m in filteredMoments" :key="m.id" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
         <div class="flex justify-between items-start">
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs">我</div>
-            <span class="text-xs text-slate-400 handwritten">{{ m.createdAt }}</span>
-            <span v-if="m.mood" class="text-sm">{{ m.mood }}</span>
-            <span v-if="m.isPrivate" class="text-xs">🔀</span>
-          </div>
-          <button @click="deleteMoment(m.id)" class="text-rose-400 hover:text-rose-600 text-xs btn-delete">删除</button>
+          <div class="flex items-center gap-2"><div class="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white text-sm font-body">我</div><span class="text-sm text-slate-400 handwritten">{{ m.createdAt }}</span><span v-if="m.mood" class="text-lg">{{ m.mood }}</span><span v-if="m.isPrivate" class="text-xs">🔀</span></div>
+          <button @click="deleteMoment(m.id)" class="text-rose-400 hover:text-rose-600 text-sm btn-delete min-w-[44px] min-h-[44px] flex items-center justify-center">删除</button>
         </div>
         <div v-if="m.isPrivate && !isUnlocked && filter !== 'private'"><p class="mt-3 text-sm text-slate-400">🔀 隐私内容，点击查看</p></div>
         <div v-else-if="m.isPrivate && !isUnlocked && filter === 'private'"><div class="mt-3 text-sm text-slate-400">🔀 需要密码查看</div></div>
-        <div v-else>
-          <p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ m.content }}</p>
-          <img v-if="m.image" :src="m.image" class="mt-3 rounded-2xl max-h-80 w-full object-cover" />
-          <div class="mt-3 flex gap-4 text-xs text-slate-400"><button @click="aiComment(m)" :disabled="m.aiLoading" class="hover:text-indigo-500 transition">{{ m.aiLoading ? '💻 思考中...' : '💻 AI 评论' }}</button></div>
-          <div v-if="m.aiComment" class="mt-2 p-3 bg-purple-50 rounded-2xl text-xs text-purple-600">💻 {{ m.aiComment }}</div>
-        </div>
+        <div v-else><p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ m.content }}</p><img v-if="m.image" :src="m.image" class="mt-3 rounded-2xl max-h-80 w-full object-cover" /><div class="mt-3 flex gap-4 text-sm text-slate-400"><button @click="aiComment(m)" :disabled="m.aiLoading" class="hover:text-primary-500 transition min-h-[36px]">{{ m.aiLoading ? '💻 思考中...' : '💻 AI 评论' }}</button></div><div v-if="m.aiComment" class="mt-2 p-3 bg-primary-50 rounded-2xl text-sm text-primary-700">💻 {{ m.aiComment }}</div></div>
       </div>
-      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-10">还没有动态，记录你的生活瞬间吧 📲</div>
+      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-12">还没有动态，记录你的生活瞬间吧 📲</div>
     </div>
   </div>
 </template>
