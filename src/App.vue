@@ -33,7 +33,7 @@
           {{ item.label }}
         </router-link>
       </nav>
-      <div class="hidden md:block p-4 border-t border-slate-700 text-center text-[10px] text-slate-500">
+      <div class="p-4 border-t border-slate-700 text-center text-[10px] text-slate-500">
         100% 纯前端 · 数据本地存储 · 61h制作
       </div>
     </aside>

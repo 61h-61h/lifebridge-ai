@@ -144,7 +144,8 @@ const loadConversation = (conv) => {
   messages.value = conv.messages ? [...conv.messages] : [];
   selectedProvider.value = conv.provider || 'zhipu';
   localStorage.setItem(CURRENT_CONV_KEY, conv.id);
-  scrollToBottom();
+  showHistory.value = false;
+  nextTick(() => scrollToBottom());
 };
 
 const startNewChat = () => {
