@@ -42,21 +42,11 @@
       </div>
     </aside>
 
-    <main v-if="isChat" class="flex-1 flex flex-col min-h-0 overflow-hidden">
-      <div class="flex-1 flex flex-col min-h-0 p-2 md:p-4">
-        <router-view v-slot="{ Component }">
+    <main class="flex-1 overflow-y-auto min-h-0 pb-20 md:pb-0">
+      <div :class="isChat ? 'flex flex-col h-full p-2 md:p-4' : 'max-w-6xl mx-auto px-3 py-4 md:p-10'">
+        <router-view v-slot="{ Component, route: r }">
           <transition name="fade" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
-      </div>
-    </main>
-
-    <main v-else class="flex-1 overflow-y-auto min-h-0 pb-20 md:pb-0">
-      <div class="max-w-6xl mx-auto px-3 py-4 md:p-10">
-        <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
-            <component :is="Component" />
+            <component :is="Component" :key="r.fullPath" />
           </transition>
         </router-view>
       </div>
