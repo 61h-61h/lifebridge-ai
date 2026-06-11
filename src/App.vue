@@ -1,5 +1,15 @@
 <template>
-  <div class="flex h-screen overflow-hidden bg-slate-50">
+  <!-- Landing page -->
+  <div v-if="isLanding" class="min-h-screen">
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </div>
+
+  <!-- Main App -->
+  <div v-else class="flex h-screen overflow-hidden bg-slate-50">
 
     <header class="md:hidden flex items-center justify-between bg-white px-4 py-3 shrink-0 z-20 border-b border-slate-100">
       <h1 class="text-base font-bold text-slate-800 font-heading">LifeBridge</h1>
@@ -11,7 +21,6 @@
 
     <div v-if="mobileMenuOpen" class="md:hidden fixed inset-0 bg-black/40 z-30" @click="mobileMenuOpen = false"></div>
 
-    <!-- Sidebar - w-64 per spec -->
     <aside
       :class="mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'"
       class="w-64 bg-white border-r border-slate-100 flex flex-col shrink-0 fixed md:static inset-y-0 left-0 z-40 transition-transform duration-300 md:translate-x-0">
@@ -23,7 +32,7 @@
       <nav class="flex-1 py-3 space-y-0.5 px-3 overflow-y-auto" @click="mobileMenuOpen = false">
         <router-link v-for="item in navItems" :key="item.path" :to="item.path"
           class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-300 min-h-[44px]"
-          :class="[$route.path === item.path ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50']">
+          :class="[route.path === item.path ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50']">
           <span>{{ item.icon }}</span>
           {{ item.label }}
         </router-link>
@@ -33,7 +42,6 @@
       </div>
     </aside>
 
-    <!-- Main content - flex-1 max-w-6xl mx-auto p-10 per spec -->
     <main class="flex-1 overflow-y-auto pb-16 md:pb-0 min-h-0">
       <div class="max-w-6xl mx-auto p-4 md:p-10">
         <router-view v-slot="{ Component }">
@@ -44,11 +52,10 @@
       </div>
     </main>
 
-    <!-- Mobile nav - 44px touch targets per skill -->
     <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around py-1 z-30 safe-bottom">
       <router-link v-for="item in bottomNavItems" :key="item.path" :to="item.path"
         class="flex flex-col items-center justify-center gap-0.5 px-1 py-1 rounded-lg text-[10px] transition-colors min-w-[44px] min-h-[44px]"
-        :class="$route.path === item.path ? 'text-primary-600' : 'text-slate-400'">
+        :class="[route.path === item.path ? 'text-primary-600' : 'text-slate-400']">
         <span class="text-lg">{{ item.icon }}</span>
         <span class="truncate">{{ item.label }}</span>
       </router-link>
@@ -57,13 +64,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 const mobileMenuOpen = ref(false);
+const isLanding = computed(() => route.path === '/');
 const navItems = [
-  { path:'/',label:'主控台',icon:'🏠'},{ path:'/diary',label:'情绪日记',icon:'📉'},{ path:'/tasks',label:'任务板',icon:'✅'},{ path:'/timeline',label:'时光纪念馆',icon:'🔔'},{ path:'/moments',label:'朋友圈',icon:'👰'},{ path:'/tools',label:'实用工具箱',icon:'🧰'},{ path:'/chat',label:'AI 对话',icon:'💻'},{ path:'/settings',label:'AI 脑核中心',icon:'🧥'},
+  { path:'/dashboard',label:'主控台',icon:'🏠'},{ path:'/diary',label:'情绪日记',icon:'📉'},{ path:'/tasks',label:'任务板',icon:'✅'},{ path:'/timeline',label:'时光纪念馆',icon:'🔔'},{ path:'/moments',label:'朋友圈',icon:'👰'},{ path:'/tools',label:'实用工具箱',icon:'🧰'},{ path:'/chat',label:'AI 对话',icon:'💻'},{ path:'/settings',label:'AI 脑核中心',icon:'🧥'},
 ];
 const bottomNavItems = [
-  { path:'/',label:'主控台',icon:'🏠'},{ path:'/diary',label:'日记',icon:'📉'},{ path:'/tasks',label:'任务',icon:'✅'},{ path:'/chat',label:'AI',icon:'💻'},{ path:'/moments',label:'朋友圈',icon:'👰'},
+  { path:'/dashboard',label:'主控台',icon:'🏠'},{ path:'/diary',label:'日记',icon:'📉'},{ path:'/tasks',label:'任务',icon:'✅'},{ path:'/chat',label:'AI',icon:'💻'},{ path:'/moments',label:'朋友圈',icon:'👰'},
 ];
 </script>
 
