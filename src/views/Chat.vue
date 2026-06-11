@@ -64,11 +64,11 @@ onMounted(() => { loadConversations(); });
 </script>
 <style scoped>
 .chat-height {
-  height: calc(100vh - 7rem);
+  height: calc(100dvh - 8rem);
 }
 @media (min-width: 768px) {
   .chat-height {
-    height: calc(100vh - 5rem);
+    height: calc(100dvh - 5rem);
   }
 }
 .dropdown-enter-active{transition:all 0.18s ease}
