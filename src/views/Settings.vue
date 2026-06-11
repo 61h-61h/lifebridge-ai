@@ -1,13 +1,13 @@
 ﻿<template>
-  <div class="p-8 max-w-4xl mx-auto space-y-6">
+  <div class="p-4 md:p-8 max-w-4xl mx-auto space-y-4 md:space-y-6">
     <div class="border-b pb-4">
       <h1 class="text-2xl font-black text-slate-800">AI 大脑神经中心</h1>
       <p class="text-xs text-slate-400 mt-1">配置国内大模型密钥，数据纯前端存储在你的个人浏览器中，绝对安全。</p>
     </div>
 
-    <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-2xl flex items-center justify-between">
+    <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
       <span class="text-sm font-semibold text-indigo-900">🧠 设定当前全站默认思维大脑：</span>
-      <select v-model="active" @change="save" class="p-2 border rounded-xl bg-white outline-none text-sm font-medium">
+      <select v-model="active" @change="save" class="p-2 border rounded-xl bg-white outline-none text-sm font-medium w-full sm:w-auto">
         <option value="zhipu">智谱 GLM-4-Flash (最推荐・免费)</option>
         <option value="deepseek">DeepSeek-Chat</option>
         <option value="qwen">阿里通义千问-Plus</option>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="space-y-4">
-      <div v-for="(name, key) in providerNames" :key="key" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+      <div v-for="(name, key) in providerNames" :key="key" class="bg-white p-4 md:p-5 rounded-2xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 items-center">
         <span class="font-bold text-slate-700 text-sm">{{ name }} API Key</span>
         <input v-model="keys[key]" type="password" placeholder="请输入官方申请的 sk-..." class="md:col-span-2 p-2.5 border rounded-xl text-xs font-mono outline-none focus:ring-1 focus:ring-slate-300" />
       </div>

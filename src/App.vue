@@ -48,7 +48,7 @@
     </main>
 
     <!-- 手机端底部导航栏 -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around py-1.5 z-30 safe-bottom z-30">
+    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around py-1.5 z-30 safe-bottom">
       <router-link v-for="item in bottomNavItems" :key="item.path" :to="item.path"
         class="flex flex-col items-center gap-0.5 px-1 py-1 rounded-lg text-[10px] transition-colors min-w-0"
         :class="$route.path === item.path ? 'text-indigo-600' : 'text-slate-400'">

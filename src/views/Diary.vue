@@ -6,10 +6,10 @@
     </div>
 
     <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm space-y-3 md:space-y-4">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1 md:gap-2 flex-wrap">
         <span class="text-sm font-semibold text-slate-600">此刻心情：</span>
         <button v-for="m in moods" :key="m" @click="form.mood = m"
-          class="text-xl px-2 py-1 rounded-lg transition"
+          class="text-lg md:text-xl px-1 md:px-2 py-1 rounded-lg transition shrink-0"
           :class="form.mood === m ? 'bg-indigo-100 scale-110' : 'hover:bg-slate-50'">
           {{ m }}
         </button>

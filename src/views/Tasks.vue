@@ -53,7 +53,7 @@ import { storage, KEYS } from '../services/storage';
 import { askAI } from '../services/ai';
 
 const showForm = ref(false);
-const form = ref({ title: '', quadrant: 'q2' });
+const form = ref({ title: '', quadrant: 'q2', useAI: false });
 const taskVersion = ref(0);
 const tasks = computed(() => {
   taskVersion.value;
