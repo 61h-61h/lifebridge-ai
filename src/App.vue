@@ -43,13 +43,11 @@
     </aside>
 
     <main class="flex-1 overflow-y-auto min-h-0 pb-20 md:pb-0">
-      <div :class="isChat ? 'flex flex-col h-full p-2 md:p-4' : 'max-w-6xl mx-auto px-3 py-4 md:p-10'">
-        <router-view v-slot="{ Component, route: r }">
-          <transition name="fade" mode="out-in">
-            <component :is="Component" :key="r.fullPath" />
-          </transition>
-        </router-view>
-      </div>
+      <router-view v-slot="{ Component, route: r }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" :key="r.fullPath" />
+        </transition>
+      </router-view>
     </main>
 
     <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around py-1 z-30 safe-bottom">
@@ -70,7 +68,6 @@ import { LayoutDashboard, BookHeart, CheckSquare, Clock, Users, Wrench, MessageC
 const route = useRoute();
 const mobileMenuOpen = ref(false);
 const isStandalone = computed(() => route.path === '/' || route.path.startsWith('/info'));
-const isChat = computed(() => route.path === '/chat');
 const navItems = [
   { path:'/dashboard', label:'主控台', icon: LayoutDashboard },
   { path:'/diary', label:'情绪日记', icon: BookHeart },

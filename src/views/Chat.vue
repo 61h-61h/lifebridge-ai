@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col chat-height">
+  <div class="flex flex-col" style="height: calc(100dvh - 6rem)">
     <div class="border-b border-slate-100 pb-2 md:pb-3 flex justify-between items-center shrink-0">
       <div><h1 class="text-lg md:text-2xl font-bold text-slate-800 font-heading"><MessageCircle :size="20" class="inline-block mr-1.5" />AI 对话</h1><p class="hidden md:block text-sm text-slate-400 mt-1">与 AI 自由交流，选择不同的智能大脑</p></div>
       <div class="relative">
@@ -76,4 +76,7 @@ onMounted(() => { loadConversations(); });
 .dropdown-leave-active{transition:all 0.12s ease}
 .dropdown-enter-from{opacity:0;transform:translateY(-6px) scale(0.97)}
 .dropdown-leave-to{opacity:0;transform:translateY(-3px) scale(0.99)}
+@media (min-width: 768px) {
+  .chat-root { height: calc(100dvh - 5rem); }
+}
 </style>
