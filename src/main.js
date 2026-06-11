@@ -5,6 +5,7 @@ import App from './App.vue'
 import './style.css'
 
 import Landing from './views/Landing.vue'
+import Info from './views/Info.vue'
 import Dashboard from './views/Dashboard.vue'
 import Diary from './views/Diary.vue'
 import Tasks from './views/Tasks.vue'
@@ -16,6 +17,7 @@ import Settings from './views/Settings.vue'
 
 const routes = [
   { path: '/', component: Landing },
+  { path: '/info', component: Info },
   { path: '/dashboard', component: Dashboard },
   { path: '/diary', component: Diary },
   { path: '/tasks', component: Tasks },

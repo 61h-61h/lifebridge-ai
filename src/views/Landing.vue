@@ -7,9 +7,9 @@
           LifeBridge<span class="text-slate-400 font-normal">.</span>
         </div>
         <div class="hidden md:flex space-x-10 text-sm font-medium text-slate-500">
-          <button @click="scrollTo('philosophy')" class="hover:text-slate-800 transition-colors bg-transparent border-none cursor-pointer">设计理念</button>
-          <button @click="scrollTo('features')" class="hover:text-slate-800 transition-colors bg-transparent border-none cursor-pointer">功能特性</button>
-          <button @click="scrollTo('about')" class="hover:text-slate-800 transition-colors bg-transparent border-none cursor-pointer">关于</button>
+          <router-link to="/info?tab=philosophy" class="hover:text-slate-800 transition-colors">设计理念</router-link>
+          <router-link to="/info?tab=features" class="hover:text-slate-800 transition-colors">功能特性</router-link>
+          <router-link to="/info?tab=about" class="hover:text-slate-800 transition-colors">关于</router-link>
         </div>
         <router-link to="/dashboard" class="bg-slate-800 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-slate-700 transition-all transform hover:scale-105 shadow-sm hover:shadow-md">
           开启体验
@@ -32,18 +32,21 @@
           <router-link to="/dashboard" class="bg-slate-800 text-white px-8 py-4 rounded-full text-base font-medium hover:bg-slate-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl hover:-translate-y-0.5 inline-block">
             立即构建桥梁
           </router-link>
-          <button @click="scrollTo('features')" class="bg-transparent text-slate-600 px-8 py-4 rounded-full text-base font-medium border border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition-all">
+          <router-link to="/info?tab=features" class="bg-transparent text-slate-600 px-8 py-4 rounded-full text-base font-medium border border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition-all">
             了解更多
-          </button>
+          </router-link>
         </div>
       </div>
     </section>
 
     <section id="philosophy" class="py-32 bg-white relative">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-16">
-          <h2 class="text-3xl md:text-4xl font-semibold text-slate-800 font-heading mb-4">设计理念</h2>
-          <p class="text-slate-500 max-w-xl text-lg">不追求炫技，只关心你是否用得顺手、用得安心。</p>
+        <div class="mb-16 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-semibold text-slate-800 font-heading mb-4">设计理念</h2>
+            <p class="text-slate-500 max-w-xl text-lg">不追求炫技，只关心你是否用得顺手、用得安心。</p>
+          </div>
+          <router-link to="/info?tab=philosophy" class="text-primary-600 hover:text-primary-700 text-sm font-medium transition whitespace-nowrap">深入了解 →</router-link>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
           <div class="group">
@@ -67,9 +70,12 @@
 
     <section id="features" class="py-32 bg-[#FDFCF8] relative">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="mb-16">
-          <h2 class="text-3xl md:text-4xl font-semibold text-slate-800 font-heading mb-4">功能特性</h2>
-          <p class="text-slate-500 max-w-xl text-lg">多维度覆盖你的日常生活，从情绪到效率，一站搞定。</p>
+        <div class="mb-16 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-semibold text-slate-800 font-heading mb-4">功能特性</h2>
+            <p class="text-slate-500 max-w-xl text-lg">多维度覆盖你的日常生活，从情绪到效率，一站搞定。</p>
+          </div>
+          <router-link to="/info?tab=features" class="text-primary-600 hover:text-primary-700 text-sm font-medium transition whitespace-nowrap">查看全部功能 →</router-link>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition"><div class="text-3xl mb-3">📉</div><h3 class="font-bold text-slate-800 mb-2 font-heading">情绪日记</h3><p class="text-sm text-slate-500">记录心情 · AI 倾听回应 · 情绪追踪</p></div>
@@ -86,15 +92,17 @@
 
     <section id="about" class="py-32 bg-white relative">
       <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-3xl md:text-4xl font-semibold text-slate-800 font-heading mb-8">关于 LifeBridge</h2>
-        <div class="space-y-6 text-slate-600 leading-relaxed">
-          <p>LifeBridge 是一个<strong class="text-slate-800">纯前端个人生活助理</strong>，致力于用 AI 技术温暖地陪伴你的日常生活。</p>
-          <p>我们相信，好的工具应该像老朋友一样——<strong class="text-slate-800">懂你、陪你、却从不窥探你的秘密</strong>。</p>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-            <div class="p-6 bg-[#FDFCF8] rounded-3xl text-center"><div class="text-3xl mb-3">🔐</div><h3 class="font-bold text-slate-800 mb-2 font-heading">隐私至上</h3><p class="text-sm text-slate-500">所有数据存储在浏览器的 localStorage 中，不上传任何服务器，你的数据你做主。</p></div>
-            <div class="p-6 bg-[#FDFCF8] rounded-3xl text-center"><div class="text-3xl mb-3">🧥</div><h3 class="font-bold text-slate-800 mb-2 font-heading">多AI接入</h3><p class="text-sm text-slate-500">支持智谱、DeepSeek、通义千问、豆包、腾讯元宝，可自由切换，API Key 本地存储。</p></div>
-            <div class="p-6 bg-[#FDFCF8] rounded-3xl text-center"><div class="text-3xl mb-3">🌟</div><h3 class="font-bold text-slate-800 mb-2 font-heading">永续开源</h3><p class="text-sm text-slate-500">基于 Vue 3 + Tailwind CSS 构建，无后端依赖，可自主部署在任何静态托管服务上。</p></div>
+        <div class="mb-16 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-semibold text-slate-800 font-heading mb-4">关于 LifeBridge</h2>
+            <p class="text-slate-500 max-w-xl text-lg">连接科技与日常的桥梁。</p>
           </div>
+          <router-link to="/info?tab=about" class="text-primary-600 hover:text-primary-700 text-sm font-medium transition whitespace-nowrap">了解更多 →</router-link>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 bg-[#FDFCF8] rounded-3xl text-center"><div class="text-3xl mb-3">🔐</div><h3 class="font-bold text-slate-800 mb-2 font-heading">隐私至上</h3><p class="text-sm text-slate-500">所有数据存储在浏览器的 localStorage 中，不上传任何服务器。</p></div>
+          <div class="p-6 bg-[#FDFCF8] rounded-3xl text-center"><div class="text-3xl mb-3">🧥</div><h3 class="font-bold text-slate-800 mb-2 font-heading">多AI接入</h3><p class="text-sm text-slate-500">智谱、DeepSeek、通义千问、豆包、腾讯元宝自由切换。</p></div>
+          <div class="p-6 bg-[#FDFCF8] rounded-3xl text-center"><div class="text-3xl mb-3">🌟</div><h3 class="font-bold text-slate-800 mb-2 font-heading">永续开源</h3><p class="text-sm text-slate-500">Vue 3 + Tailwind CSS，无后端依赖，永久免费。</p></div>
         </div>
       </div>
     </section>
@@ -109,10 +117,6 @@
 </template>
 
 <script setup>
-const scrollTo = (id) => {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-};
 </script>
 
 <style scoped>
