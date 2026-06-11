@@ -1,29 +1,36 @@
 ﻿<template>
-  <div class="p-4 md:p-8 max-w-3xl mx-auto space-y-6">
+  <div class="p-4 md:p-8 w-full max-w-4xl mx-auto space-y-6">
     <div class="border-b border-slate-100 pb-4">
       <h1 class="text-2xl font-bold text-slate-800 handwritten">📉 情绪日记与树洞</h1>
-      <p class="text-xs text-slate-400 mt-1">记录心情，AI 倾听你的心声</p>
+      <p class="text-sm text-slate-400 mt-1">记录心情，AI 倾听你的心声</p>
     </div>
+
+    <!-- New diary form -->
     <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
       <div class="flex items-center gap-1 md:gap-2 flex-wrap">
         <span class="text-sm text-slate-600 shrink-0">此刻心情：</span>
-        <button v-for="m in moods" :key="m" @click="form.mood = m" class="text-lg md:text-xl px-1 md:px-2 py-1 rounded-xl transition" :class="form.mood === m ? 'bg-indigo-50 scale-110' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button>
+        <button v-for="m in moods" :key="m" @click="form.mood = m" class="text-xl md:text-2xl px-1.5 py-1 rounded-xl transition" :class="form.mood === m ? 'bg-indigo-50 scale-110' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button>
       </div>
       <input v-model="form.title" placeholder="给今天起个标题（可选）" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 placeholder:text-slate-300 handwritten" />
       <textarea v-model="form.content" rows="5" placeholder="写下你此刻的感受..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 resize-none placeholder:text-slate-300"></textarea>
       <div class="flex justify-between items-center">
-        <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-purple-50 text-purple-600 text-xs rounded-xl hover:bg-purple-100 transition disabled:opacity-50">{{ aiLoading ? 'AI 倾听中...' : '💻 让 AI 回应' }}</button>
+        <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-purple-50 text-purple-600 text-sm rounded-xl hover:bg-purple-100 transition disabled:opacity-50">{{ aiLoading ? 'AI 倾听中...' : '💻 让 AI 回应' }}</button>
         <button @click="saveDiary" class="px-6 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition btn-save">保存日记</button>
       </div>
       <div v-if="aiReply" class="p-4 bg-purple-50 rounded-2xl text-sm text-purple-700 leading-relaxed whitespace-pre-wrap">{{ aiReply }}</div>
     </div>
+
+    <!-- Diary list -->
     <div class="space-y-3">
       <div v-for="d in diaries" :key="d.id" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition">
-        <div class="flex justify-between items-start"><div><span class="text-xl mr-2">{{ d.mood }}</span><span v-if="d.title" class="font-bold text-slate-800 text-sm handwritten">{{ d.title }}</span></div><div class="flex items-center gap-2"><span class="text-[10px] text-slate-400 handwritten">{{ d.createdAt }}</span><button @click="deleteDiary(d.id)" class="text-rose-400 hover:text-rose-600 text-xs btn-delete">删除</button></div></div>
+        <div class="flex justify-between items-start">
+          <div><span class="text-xl mr-2">{{ d.mood }}</span><span v-if="d.title" class="font-bold text-slate-800 handwritten">{{ d.title }}</span></div>
+          <div class="flex items-center gap-2"><span class="text-xs text-slate-400 handwritten">{{ d.createdAt }}</span><button @click="deleteDiary(d.id)" class="text-rose-400 hover:text-rose-600 text-xs btn-delete">删除</button></div>
+        </div>
         <p class="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{{ d.content }}</p>
-        <div v-if="d.aiReply" class="mt-3 p-3 bg-purple-50 rounded-2xl text-xs text-purple-600 leading-relaxed">💻 {{ d.aiReply }}</div>
+        <div v-if="d.aiReply" class="mt-3 p-3 bg-purple-50 rounded-2xl text-sm text-purple-600 leading-relaxed">💻 {{ d.aiReply }}</div>
       </div>
-      <div v-if="diaries.length === 0" class="text-center text-slate-400 text-sm py-8">还没有日记，写下第一篇吧 ✍️</div>
+      <div v-if="diaries.length === 0" class="text-center text-slate-400 text-sm py-10">还没有日记，写下第一篇吧 ✍️</div>
     </div>
   </div>
 </template>

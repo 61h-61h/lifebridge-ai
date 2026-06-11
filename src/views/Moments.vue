@@ -1,9 +1,10 @@
 ﻿<template>
-  <div class="p-4 md:p-8 max-w-2xl mx-auto space-y-6">
+  <div class="p-4 md:p-8 w-full max-w-4xl mx-auto space-y-6">
     <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
-      <div><h1 class="text-2xl font-bold text-slate-800">👰 朋友圈</h1><p class="text-xs text-slate-400 mt-1">记录你的生活瞬间</p></div>
+      <div><h1 class="text-2xl font-bold text-slate-800">👰 朋友圈</h1><p class="text-sm text-slate-400 mt-1">记录你的生活瞬间</p></div>
       <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">{{ showForm ? '取消' : '+ 发布动态' }}</button>
     </div>
+
     <div v-if="showForm" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm space-y-3">
       <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 resize-none placeholder:text-slate-300"></textarea>
       <div class="flex gap-1"><button v-for="m in quickMoods" :key="m" @click="form.mood = form.mood === m ? '' : m" class="text-lg px-1.5 py-0.5 rounded-lg transition" :class="form.mood === m ? 'bg-indigo-50' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button></div>
@@ -11,20 +12,52 @@
       <div><label class="text-sm text-slate-600 block mb-2">上传图片</label><input type="file" @change="handleImageUpload" accept="image/*" class="w-full text-sm text-slate-400" /></div>
       <div class="flex gap-2"><button @click="showForm = false" class="flex-1 px-4 py-2 bg-slate-100 text-slate-600 text-sm rounded-xl hover:bg-slate-200 transition btn-cancel">取消</button><button @click="addMoment" class="flex-1 px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition btn-publish">发布</button></div>
     </div>
-    <div class="flex gap-2 mb-4"><button @click="filter='all'" :class="filter==='all'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-3 py-1.5 rounded-full text-xs transition hover:scale-105">全部</button><button @click="filter='public'" :class="filter==='public'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-3 py-1.5 rounded-full text-xs transition hover:scale-105">公共</button><button @click="filter='private'" :class="filter==='private'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-3 py-1.5 rounded-full text-xs transition hover:scale-105">🔀 隐私</button></div>
-    <div class="space-y-4"><div v-for="m in filteredMoments" :key="m.id" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm"><div class="flex justify-between items-start"><div class="flex items-center gap-2"><div class="w-8 h-8 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-xs">我</div><span class="text-xs text-slate-400 handwritten">{{ m.createdAt }}</span><span v-if="m.mood" class="text-sm">{{ m.mood }}</span><span v-if="m.isPrivate" class="text-xs">🔀</span></div><button @click="deleteMoment(m.id)" class="text-rose-400 hover:text-rose-600 text-xs btn-delete">删除</button></div>
-    <div v-if="m.isPrivate && !isUnlocked && filter !== 'private'"><p class="mt-3 text-sm text-slate-400">🔀 隐私内容，点击查看</p></div><div v-else-if="m.isPrivate && !isUnlocked && filter === 'private'"><div class="mt-3 text-sm text-slate-400">🔀 需要密码查看</div></div>
-    <div v-else><p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ m.content }}</p><img v-if="m.image" :src="m.image" class="mt-3 rounded-2xl max-h-80 w-full object-cover" /><div class="mt-3 flex gap-4 text-xs text-slate-400"><button @click="aiComment(m)" :disabled="m.aiLoading" class="hover:text-indigo-500 transition">{{ m.aiLoading ? '💻 思考中...' : '💻 AI 评论' }}</button></div><div v-if="m.aiComment" class="mt-2 p-3 bg-purple-50 rounded-2xl text-xs text-purple-600">💻 {{ m.aiComment }}</div></div></div><div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-8">还没有动态，记录你的生活瞬间吧 📲</div></div>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-2">
+      <button @click="filter='all'" :class="filter==='all'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-4 py-2 rounded-full text-sm transition hover:scale-105">全部</button>
+      <button @click="filter='public'" :class="filter==='public'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-4 py-2 rounded-full text-sm transition hover:scale-105">公共</button>
+      <button @click="filter='private'" :class="filter==='private'?'bg-indigo-50 text-indigo-600':'bg-white text-slate-500 border border-slate-100'" class="px-4 py-2 rounded-full text-sm transition hover:scale-105">🔀 隐私</button>
+    </div>
+
+    <!-- Moments list -->
+    <div class="space-y-4">
+      <div v-for="m in filteredMoments" :key="m.id" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+        <div class="flex justify-between items-start">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm">我</div>
+            <span class="text-sm text-slate-400 handwritten">{{ m.createdAt }}</span>
+            <span v-if="m.mood" class="text-lg">{{ m.mood }}</span>
+            <span v-if="m.isPrivate" class="text-xs">🔀</span>
+          </div>
+          <button @click="deleteMoment(m.id)" class="text-rose-400 hover:text-rose-600 text-sm btn-delete">删除</button>
+        </div>
+        <div v-if="m.isPrivate && !isUnlocked && filter !== 'private'">
+          <p class="mt-3 text-sm text-slate-400">🔀 隐私内容，点击查看</p>
+        </div>
+        <div v-else-if="m.isPrivate && !isUnlocked && filter === 'private'">
+          <div class="mt-3 text-sm text-slate-400">🔀 需要密码查看</div>
+        </div>
+        <div v-else>
+          <p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ m.content }}</p>
+          <img v-if="m.image" :src="m.image" class="mt-3 rounded-2xl max-h-96 w-full object-cover" />
+          <div class="mt-3 flex gap-4 text-sm text-slate-400">
+            <button @click="aiComment(m)" :disabled="m.aiLoading" class="hover:text-indigo-500 transition">{{ m.aiLoading ? '💻 思考中...' : '💻 AI 评论' }}</button>
+          </div>
+          <div v-if="m.aiComment" class="mt-2 p-3 bg-purple-50 rounded-2xl text-sm text-purple-600">💻 {{ m.aiComment }}</div>
+        </div>
+      </div>
+      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-10">还没有动态，记录你的生活瞬间吧 📲</div>
+    </div>
   </div>
 </template>
 <script setup>
 import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
 const PRIVACY_PASSWORD_KEY = 'lb_privacy_password'; const quickMoods = ['😉','😹','😩','😌','😫','😀'];
-const form = ref({content:'',mood:'',isPrivate:false,image:''}); const filter = ref('all'); const showForm = ref(false); const showPasswordInput = ref(false); const passwordInput = ref(''); const isUnlocked = ref(false); const privacyPassword = ref(localStorage.getItem(PRIVACY_PASSWORD_KEY)||'');
+const form = ref({content:'',mood:'',isPrivate:false,image:''}); const filter = ref('all'); const showForm = ref(false); const isUnlocked = ref(false); const privacyPassword = ref(localStorage.getItem(PRIVACY_PASSWORD_KEY)||'');
 const momentVersion = ref(0); const moments = computed(() => { momentVersion.value; return storage.get(KEYS.MOMENTS); });
 const filteredMoments = computed(() => { let r=moments.value; if(filter.value==='public') r=r.filter(m=>!m.isPrivate); if(filter.value==='private') r=r.filter(m=>m.isPrivate); return r; });
 const refreshMoments = () => { momentVersion.value++; };
-const submitPassword = () => { if(passwordInput.value===privacyPassword.value){ isUnlocked.value=true; showPasswordInput.value=false; passwordInput.value=''; }else{alert('密码错误');} };
 const addMoment = () => { if(!form.value.content.trim()) return alert('请写点什么'); if(form.value.isPrivate&&!privacyPassword.value){ const p=prompt('首次设置隐私密码：'); if(!p) return; privacyPassword.value=p; localStorage.setItem(PRIVACY_PASSWORD_KEY,p); } storage.add(KEYS.MOMENTS,{...form.value,aiComment:'',aiLoading:false}); form.value={content:'',mood:'',isPrivate:false,image:''}; showForm.value=false; refreshMoments(); };
 const deleteMoment = (id) => { if(confirm('确定删除？')){ storage.delete(KEYS.MOMENTS,id); refreshMoments(); } };
 const aiComment = async (m) => { storage.update(KEYS.MOMENTS,m.id,{aiLoading:true}); refreshMoments(); try{ const r=await askAI({systemPrompt:'你是一个风趣幽默的朋友，用轻松的语气回应对方的动态。',userMessage:m.content}); storage.update(KEYS.MOMENTS,m.id,{aiComment:r,aiLoading:false}); }catch(e){storage.update(KEYS.MOMENTS,m.id,{aiComment:'⚠️ '+e.message,aiLoading:false});} refreshMoments(); };
