@@ -1,8 +1,8 @@
-<template>
-  <div class="space-y-6">
+﻿<template>
+  <div class="p-4 md:p-8 max-w-2xl mx-auto space-y-6">
     <div class="border-b border-slate-100 pb-4"><h1 class="text-2xl font-bold text-slate-800">AI 大脑神经中心</h1><p class="text-xs text-slate-400 mt-1">配置国内大模型密钥，数据纯前端存储在你的个人浏览器中，绝对安全。</p></div>
     <div class="bg-indigo-50 border border-indigo-100 rounded-3xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-      <span class="text-sm font-semibold text-indigo-900 whitespace-nowrap">🧠 设定当前全站默认思维大脑：</span>
+      <span class="text-sm font-semibold text-indigo-900 whitespace-nowrap">🧥 设定当前全站默认思维大脑</span>
       <select v-model="active" @change="save" class="p-2 bg-white border border-indigo-100 rounded-xl outline-none text-sm text-slate-700 w-full sm:w-auto"><option value="zhipu">智谱 GLM-4-Flash</option><option value="deepseek">DeepSeek-Chat</option><option value="qwen">阿里通义千问-Plus</option><option value="doubao">字节豆包</option><option value="yuanbao">腾讯元宝</option></select>
     </div>
     <div class="space-y-4">
@@ -17,5 +17,5 @@ import { ref, onMounted } from 'vue'; import { storage } from '../services/stora
 const keys = ref({}); const active = ref('zhipu');
 const providerNames = { zhipu:'智谱清言',deepseek:'DeepSeek',qwen:'通义千问',doubao:'字节豆包',yuanbao:'腾讯元宝' };
 onMounted(() => { const c=storage.getAIConfig(); keys.value=c.keys; active.value=c.active; if(!keys.value.zhipu){ keys.value.zhipu='8fcff9314cc0435d9887abacad4d3d81.QwAwgrEnWTnttD4y'; storage.saveAIConfig(keys.value,active.value); } });
-const save = () => { storage.saveAIConfig(keys.value,active.value); alert('✨ AI 配置已安全固化至本地！'); };
+const save = () => { storage.saveAIConfig(keys.value,active.value); alert('✅ AI 配置已安全固化至本地！'); };
 </script>

@@ -1,14 +1,14 @@
-<template>
-  <div class="space-y-6 max-w-3xl">
+﻿<template>
+  <div class="p-4 md:p-8 max-w-3xl mx-auto space-y-6">
     <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
-      <div><h1 class="text-2xl font-bold text-slate-800">⏳ 时光纪念馆</h1><p class="text-xs text-slate-400 mt-1">记录人生中每一个闪光的里程碑</p></div>
+      <div><h1 class="text-2xl font-bold text-slate-800">🔔 时光纪念馆</h1><p class="text-xs text-slate-400 mt-1">记录人生中每一个闪光的里程碑</p></div>
       <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">{{ showForm ? '取消' : '+ 新增里程碑' }}</button>
     </div>
     <div v-if="showForm" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm space-y-3">
       <input v-model="form.title" placeholder="里程碑标题" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 placeholder:text-slate-300" />
       <input v-model="form.date" type="date" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 text-slate-700" />
       <textarea v-model="form.description" rows="3" placeholder="描述这个里程碑..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 resize-none placeholder:text-slate-300"></textarea>
-      <select v-model="form.category" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none text-slate-700"><option value="career">💼 职业</option><option value="study">📚 学业</option><option value="life">🏠 生活</option><option value="relationship">❤️ 情感</option><option value="health">💪 健康</option></select>
+      <select v-model="form.category" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none text-slate-700"><option value="career">💼 职业</option><option value="study">📎 学业</option><option value="life">🏠 生活</option><option value="relationship">❤️ 情感</option><option value="health">🩭 健康</option></select>
       <div><label class="text-sm text-slate-600 block mb-2">上传图片</label><input type="file" @change="handleImageUpload" accept="image/*" class="w-full text-sm text-slate-400" /></div>
       <div class="flex gap-2"><button @click="showForm = false" class="flex-1 px-4 py-2 bg-slate-100 text-slate-600 text-sm rounded-xl hover:bg-slate-200 transition btn-cancel">取消</button><button @click="addMilestone" class="flex-1 px-6 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 hover:scale-105 transition btn-save">确认添加</button></div>
     </div>
@@ -24,10 +24,10 @@ import { ref, computed, onMounted } from 'vue'; import { storage, KEYS } from '.
 const showForm = ref(false); const form = ref({title:'',date:'',description:'',category:'life',image:''}); const activeReminders = ref([]); const notifiedMilestones = ref(new Set());
 const milestoneVersion = ref(0); const milestonesList = computed(() => { milestoneVersion.value; return storage.get(KEYS.MILESTONES); });
 const refreshMilestones = () => { milestoneVersion.value++; };
-const categoryIcon = (c) => ({career:'💼',study:'📚',life:'🏠',relationship:'❤️',health:'💪'})[c]||'🏠';
+const categoryIcon = (c) => ({career:'💼',study:'📎',life:'🏠',relationship:'❤️',health:'🩭'})[c]||'🏠';
 const formatDate = (d) => { const dt=new Date(d); return dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日'; };
-const getDaysMessage = (d) => { const n=new Date(); n.setHours(0,0,0,0); const t=new Date(d); t.setHours(0,0,0,0); const diff=Math.floor((t-n)/(1000*60*60*24)); if(diff>0) return '距离还有 '+diff+' 天'; if(diff<0){ const a=Math.abs(diff); let m='已过去 '+a+' 天'; if(a>=365) m+=' ('+Math.floor(a/365)+' 年)'; return m; } return '就是今天！🎉'; };
-const checkMilestones = () => { const n=new Date(); n.setHours(0,0,0,0); const reminders=[]; const ms=storage.get(KEYS.MILESTONES); ms.forEach(m=>{ const t=new Date(m.date); t.setHours(0,0,0,0); const diff=Math.floor((n-t)/(1000*60*60*24)); if(diff>=0){ const k=m.id+'-'+diff; if(!notifiedMilestones.value.has(k)){ if(diff===0){reminders.push({id:m.id,title:m.title,message:'就是今天！🎉'});notifiedMilestones.value.add(k)}else if(diff===100){reminders.push({id:m.id,title:m.title,message:'已过去100天！💯'});notifiedMilestones.value.add(k)}else if(diff===1000){reminders.push({id:m.id,title:m.title,message:'已过去1000天！🏆'});notifiedMilestones.value.add(k)}else if(diff===365){reminders.push({id:m.id,title:m.title,message:'已过去整整一年！🎂'});notifiedMilestones.value.add(k)}else if(diff>365&&diff%365===0){reminders.push({id:m.id,title:m.title,message:'已过去'+Math.floor(diff/365)+'年！🎉'});notifiedMilestones.value.add(k)} } } }); activeReminders.value=reminders; };
+const getDaysMessage = (d) => { const n=new Date(); n.setHours(0,0,0,0); const t=new Date(d); t.setHours(0,0,0,0); const diff=Math.floor((t-n)/(1000*60*60*24)); if(diff>0) return '距离还有 '+diff+' 天'; if(diff<0){ const a=Math.abs(diff); let m='已过去 '+a+' 天'; if(a>=365) m+=' ('+Math.floor(a/365)+' 年'; return m; } return '就是今天！🎉'; };
+const checkMilestones = () => { const n=new Date(); n.setHours(0,0,0,0); const reminders=[]; const ms=storage.get(KEYS.MILESTONES); ms.forEach(m=>{ const t=new Date(m.date); t.setHours(0,0,0,0); const diff=Math.floor((n-t)/(1000*60*60*24)); if(diff>=0){ const k=m.id+'-'+diff; if(!notifiedMilestones.value.has(k)){ if(diff===0){reminders.push({id:m.id,title:m.title,message:'就是今天！🎉'});notifiedMilestones.value.add(k)}else if(diff===100){reminders.push({id:m.id,title:m.title,message:'已过去100天！💴'});notifiedMilestones.value.add(k)}else if(diff===1000){reminders.push({id:m.id,title:m.title,message:'已过去1000天！🎳'});notifiedMilestones.value.add(k)}else if(diff===365){reminders.push({id:m.id,title:m.title,message:'已过去整整一年！🪆'});notifiedMilestones.value.add(k)}else if(diff>365&&diff%365===0){reminders.push({id:m.id,title:m.title,message:'已过去'+Math.floor(diff/365)+'年！🎉'});notifiedMilestones.value.add(k)} } } }); activeReminders.value=reminders; };
 const addMilestone = () => { if(!form.value.title.trim()||!form.value.date) return alert('请填写标题和日期'); storage.add(KEYS.MILESTONES,{...form.value}); form.value={title:'',date:'',description:'',category:'life',image:''}; showForm.value=false; refreshMilestones(); checkMilestones(); };
 const deleteMilestone = (id) => { if(confirm('确定删除？')){ storage.delete(KEYS.MILESTONES,id); refreshMilestones(); checkMilestones(); } };
 const handleImageUpload = (e) => { const f=e.target.files[0]; if(f){ const r=new FileReader(); r.onload=(ev)=>{form.value.image=ev.target.result}; r.readAsDataURL(f); } };
