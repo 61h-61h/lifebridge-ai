@@ -4,41 +4,48 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Impeccable Design System — Kinpaku
-        lacquer: {
-          DEFAULT: 'oklch(7% 0.006 95)',
-          deep: 'oklch(4% 0.004 95)',
-          raised: 'oklch(11% 0.006 95)',
+        warmer: {
+          50: '#FDFBF7',
+          100: '#F7F4EC',
+          200: '#EBE6D5',
+          300: '#D9D2BC',
         },
-        graphite: {
-          DEFAULT: 'oklch(15% 0.008 95)',
-          2: 'oklch(19% 0.008 95)',
+        navy: {
+          400: '#2A4A5A',
+          500: '#1A303A',
+          600: '#132530',
+          700: '#0D1A22',
         },
-        kinpaku: {
-          pale: 'oklch(86% 0.07 84)',
-          DEFAULT: 'oklch(84% 0.19 80.46)',
-          rich: 'oklch(77% 0.13 82)',
-          deep: 'oklch(61% 0.085 78)',
+        coral: {
+          300: '#F0A590',
+          400: '#E07A5F',
+          500: '#D4694F',
+          600: '#C05840',
         },
-        patina: {
-          pale: 'oklch(82% 0.07 188)',
-          DEFAULT: 'oklch(70% 0.12 188)',
-          deep: 'oklch(49% 0.08 188)',
+        sage: {
+          300: '#A3C4A5',
+          400: '#7EA180',
+          500: '#6B8E6D',
+          600: '#5A7A5C',
         },
-        champagne: 'oklch(91% 0 0)',
-        'text-warm': 'oklch(88% 0 0)',
-        'text-muted': 'oklch(72% 0 0)',
-        'text-faint': 'oklch(62% 0 0)',
-        vermilion: 'oklch(58% 0.15 35)',
+        body: '#333F48',
+        muted: '#7A8590',
+        subtle: '#A8B2BA',
       },
       fontFamily: {
-        display: ['"Alumni Sans Pinstripe"', '"Albert Sans"', 'Arial', 'sans-serif'],
-        body: ['"Albert Sans"', '"Avenir Next"', '"Helvetica Neue"', 'Arial', 'system-ui', 'sans-serif'],
-        mono: ['"SFMono-Regular"', '"Roboto Mono"', 'Consolas', 'monospace'],
+        heading: ['"Merriweather"', 'Georgia', '"Times New Roman"', 'serif'],
+        body: ['"Inter"', 'system-ui', '-apple-system', '"Segoe UI"', 'sans-serif'],
+        handwritten: ['"Ma Shan Zheng"', 'cursive'],
       },
-      borderColor: {
-        hairline: 'oklch(78% 0 0 / 0.16)',
-        'hairline-strong': 'oklch(74% 0.09 82 / 0.6)',
+      borderRadius: {
+        '2xl': '16px',
+        '3xl': '20px',
+        '4xl': '28px',
+      },
+      boxShadow: {
+        'soft': '0 4px 24px rgba(26,48,58,0.04)',
+        'card': '0 2px 16px rgba(26,48,58,0.03)',
+        'lift': '0 8px 32px rgba(26,48,58,0.06)',
       },
     },
   },

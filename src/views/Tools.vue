@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="p-8 max-w-4xl mx-auto space-y-6">
     <div class="border-b pb-4">
       <h1 class="text-2xl font-black text-slate-800">🧰 实用工具箱</h1>
