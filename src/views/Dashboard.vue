@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="bg-gradient-to-br from-primary-500 to-primary-700 text-white p-6 md:p-10 rounded-3xl shadow-lg">
+    <div class="bg-gradient-to-br from-slate-700 to-slate-900 text-white p-6 md:p-10 rounded-3xl shadow-lg">
       <h1 class="text-2xl md:text-3xl font-bold font-heading">{{ greeting.text }}</h1>
       <p class="mt-2 text-white/70 text-sm md:text-base">{{ greeting.sub }}</p>
       <p class="mt-1 text-white/50 text-sm handwritten">{{ today }}</p>
@@ -30,7 +30,7 @@
         <div v-if="pendingTasks.length === 0" class="text-sm text-slate-400 py-4 text-center">暂无待办任务</div>
         <div v-else class="space-y-2">
           <div v-for="t in pendingTasks" :key="t.id" class="p-3 bg-slate-50 rounded-2xl text-sm flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full shrink-0" :class="t.quadrant === 'q1' ? 'bg-rose-400' : t.quadrant === 'q2' ? 'bg-amber-400' : t.quadrant === 'q3' ? 'bg-primary-400' : 'bg-slate-400'"></span>
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" :class="t.quadrant === 'q1' ? 'bg-rose-400' : t.quadrant === 'q2' ? 'bg-amber-400' : t.quadrant === 'q3' ? 'bg-slate-400' : 'bg-slate-400'"></span>
             <span class="text-slate-700">{{ t.title }}</span>
           </div>
         </div>
@@ -41,7 +41,7 @@
       <h2 class="font-bold text-slate-800 text-sm font-heading mb-3">🧥 AI 生命洞察</h2>
       <p v-if="aiInsight" class="text-sm text-slate-600 leading-relaxed">{{ aiInsight }}</p>
       <p v-else class="text-sm text-slate-400">点击按钮，让 AI 为你生成今日洞察</p>
-      <button @click="generateInsight" :disabled="insightLoading" class="mt-3 px-5 py-2.5 bg-primary-600 text-white text-sm rounded-xl hover:bg-primary-700 hover:scale-[1.02] transition disabled:opacity-50 font-body">
+      <button @click="generateInsight" :disabled="insightLoading" class="mt-3 px-5 py-2.5 bg-slate-800 text-white text-sm rounded-xl hover:bg-slate-700 hover:scale-[1.02] transition disabled:opacity-50 font-body">
         {{ insightLoading ? 'AI 思考中...' : '✨ 获取今日洞察' }}
       </button>
     </div>

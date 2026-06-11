@@ -7,15 +7,15 @@
     <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
       <div class="flex items-center gap-2 flex-wrap">
         <span class="text-sm text-slate-600 shrink-0">此刻心情：</span>
-        <button v-for="m in moods" :key="m" @click="form.mood = m" class="text-2xl p-1.5 rounded-xl transition min-w-[44px] min-h-[44px] flex items-center justify-center" :class="form.mood === m ? 'bg-primary-50 scale-110' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button>
+        <button v-for="m in moods" :key="m" @click="form.mood = m" class="text-2xl p-1.5 rounded-xl transition min-w-[44px] min-h-[44px] flex items-center justify-center" :class="form.mood === m ? 'bg-slate-50 scale-110' : 'hover:bg-slate-50 text-slate-400'">{{ m }}</button>
       </div>
-      <input v-model="form.title" placeholder="给今天起个标题（可选）" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary-200 placeholder:text-slate-300 handwritten" />
-      <textarea v-model="form.content" rows="5" placeholder="写下你此刻的感受..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary-200 resize-none placeholder:text-slate-300"></textarea>
+      <input v-model="form.title" placeholder="给今天起个标题（可选）" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-slate-200 placeholder:text-slate-300 handwritten" />
+      <textarea v-model="form.content" rows="5" placeholder="写下你此刻的感受..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-slate-200 resize-none placeholder:text-slate-300"></textarea>
       <div class="flex justify-between items-center">
-        <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-primary-50 text-primary-600 text-sm rounded-xl hover:bg-primary-100 transition disabled:opacity-50 font-body">{{ aiLoading ? 'AI 倾听中...' : '💻 让 AI 回应' }}</button>
-        <button @click="saveDiary" class="px-6 py-2 bg-primary-600 text-white text-sm rounded-xl hover:bg-primary-700 hover:scale-[1.02] transition btn-save font-body">保存日记</button>
+        <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-slate-50 text-slate-600 text-sm rounded-xl hover:bg-slate-100 transition disabled:opacity-50 font-body">{{ aiLoading ? 'AI 倾听中...' : '💻 让 AI 回应' }}</button>
+        <button @click="saveDiary" class="px-6 py-2 bg-slate-800 text-white text-sm rounded-xl hover:bg-slate-700 hover:scale-[1.02] transition btn-save font-body">保存日记</button>
       </div>
-      <div v-if="aiReply" class="p-4 bg-primary-50 rounded-2xl text-sm text-primary-700 leading-relaxed whitespace-pre-wrap">{{ aiReply }}</div>
+      <div v-if="aiReply" class="p-4 bg-slate-50 rounded-2xl text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">{{ aiReply }}</div>
     </div>
     <div class="space-y-3">
       <div v-for="d in diaries" :key="d.id" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition">
@@ -24,7 +24,7 @@
           <div class="flex items-center gap-2"><span class="text-xs text-slate-400 handwritten">{{ d.createdAt }}</span><button @click="deleteDiary(d.id)" class="text-rose-400 hover:text-rose-600 text-sm btn-delete min-w-[44px] min-h-[44px] flex items-center justify-center">删除</button></div>
         </div>
         <p class="mt-2 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">{{ d.content }}</p>
-        <div v-if="d.aiReply" class="mt-3 p-3 bg-primary-50 rounded-2xl text-sm text-primary-700 leading-relaxed">💻 {{ d.aiReply }}</div>
+        <div v-if="d.aiReply" class="mt-3 p-3 bg-slate-50 rounded-2xl text-sm text-slate-700 leading-relaxed">💻 {{ d.aiReply }}</div>
       </div>
       <div v-if="diaries.length === 0" class="text-center text-slate-400 text-sm py-12">还没有日记，写下第一篇吧 ✍️</div>
     </div>
