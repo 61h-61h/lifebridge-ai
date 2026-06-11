@@ -1,5 +1,5 @@
 <template>
-  <div class="moments-root space-y-10 max-w-2xl mx-auto">
+  <div class="moments-container space-y-10">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">朋友圈</h1>
       <p class="text-sm text-slate-400 mt-2">记录你的生活瞬间</p>

@@ -42,7 +42,7 @@
       </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto min-h-0 pb-20 md:pb-0">
+    <main class="flex-1 overflow-y-auto min-h-0 pb-24 md:pb-0">
       <router-view v-slot="{ Component, route: r }">
         <transition name="fade" mode="out-in">
           <component :is="Component" :key="r.fullPath" />

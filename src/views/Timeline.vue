@@ -1,5 +1,5 @@
 <template>
-  <div class="timeline-root max-w-2xl mx-auto space-y-10">
+  <div class="timeline-container space-y-10">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">时光纪念馆</h1>
       <p class="text-sm text-slate-400 mt-2">记录人生中每一个闪光的里程碑</p>

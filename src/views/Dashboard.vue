@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-root space-y-6">
-    <div class="bg-gradient-to-br from-slate-700 to-slate-900 text-white p-6 md:p-10 rounded-3xl shadow-lg">
+    <div class="bg-gradient-to-br from-slate-700 to-slate-900 text-white p-6 md:px-10 md:py-8 rounded-3xl shadow-lg">
       <h1 class="text-2xl md:text-3xl font-bold font-heading">{{ greeting.text }}</h1>
       <p class="mt-2 text-white/70 text-sm md:text-base">{{ greeting.sub }}</p>
       <p class="mt-1 text-white/50 text-sm handwritten">{{ today }}</p>

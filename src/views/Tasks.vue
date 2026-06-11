@@ -1,5 +1,5 @@
 <template>
-  <div class="tasks-root space-y-8">
+  <div class="tasks-container space-y-8">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">四象限任务板</h1>
       <p class="text-sm text-slate-400 mt-2">按照重要与紧急程度管理任务</p>
@@ -35,7 +35,7 @@
       </button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
       <div v-for="q in quadrants" :key="q.key" class="p-6 rounded-3xl border-2 min-h-[200px]" :class="q.bg + ' ' + q.border">
         <h2 class="font-bold text-sm mb-4 font-heading" :class="q.text">{{ q.label }}</h2>
         <div class="space-y-3">

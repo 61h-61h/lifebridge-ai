@@ -20,7 +20,7 @@
       <div class="space-y-5 w-full max-w-3xl mx-auto px-2">
         <div v-for="msg in messages" :key="msg.id"
           :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'"
-          class="max-w-[88%] md:max-w-[75%]">
+          class="max-w-[88%] md:max-w-[70%]">
           <div :class="msg.role === 'user' ? 'bg-slate-800 text-white' : 'bg-white border border-slate-100 shadow-sm'"
             class="p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap">{{ msg.content }}</div>
           <div class="text-[10px] text-slate-400 mt-1.5 handwritten"
@@ -33,7 +33,7 @@
     </div>
 
     <div class="shrink-0 pt-3 border-t border-slate-100 bg-white">
-      <div class="flex gap-3 max-w-3xl mx-auto pb-2">
+      <div class="flex gap-3 max-w-4xl mx-auto pb-2">
         <textarea v-model="input" rows="1" placeholder="输入消息..."
           class="flex-1 p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-slate-200 resize-none placeholder:text-slate-300"
           @keyup.ctrl.enter="sendMessage" @keyup.enter.exact="sendMessage"></textarea>
@@ -43,7 +43,7 @@
         </button>
       </div>
 
-      <div class="flex justify-between items-center max-w-3xl mx-auto pb-3">
+      <div class="flex justify-between items-center max-w-4xl mx-auto pb-3">
         <div class="relative">
           <button @click="showHistory = !showHistory"
             class="px-3 py-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs text-slate-500 transition flex items-center gap-1 font-body min-h-[40px]">
@@ -103,9 +103,9 @@ const sendMessage = async () => { if(!input.value.trim()||loading.value) return;
 onMounted(() => { loadConversations(); });
 </script>
 <style scoped>
-.chat-root { height: calc(100dvh - 8rem); max-width: 900px; margin: 0 auto; padding: 0 0.5rem; }
+.chat-root { height: calc(100dvh - 7rem); padding: 0 0.5rem; }
 @media (min-width: 768px) {
-  .chat-root { height: calc(100dvh - 5rem); padding: 0 1rem; }
+  .chat-root { height: calc(100dvh - 4rem); padding: 0 1rem; }
 }
 .dropdown-enter-active{transition:all 0.18s ease}
 .dropdown-leave-active{transition:all 0.12s ease}

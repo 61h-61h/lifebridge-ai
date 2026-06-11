@@ -1,5 +1,5 @@
 <template>
-  <div class="settings-root max-w-2xl mx-auto space-y-10">
+  <div class="settings-container space-y-10 max-w-2xl mx-auto">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-slate-800 font-heading">AI 脑核中心</h1>
       <p class="text-sm text-slate-400 mt-2">配置大模型密钥，数据纯前端存储，绝对安全</p>
