@@ -1,39 +1,35 @@
 <template>
-  <div class="flex flex-col md:flex-row h-dvh md:h-screen bg-slate-50 overflow-hidden">
+  <div class="flex flex-col md:flex-row h-dvh md:h-screen bg-lacquer overflow-hidden">
 
     <!-- 手机端顶部栏 -->
-    <header class="md:hidden flex items-center justify-between bg-slate-900 text-white px-4 py-3 shrink-0 z-20">
-      <h1 class="text-base font-black tracking-wide">🌉 LifeBridge</h1>
-      <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-white p-1">
+    <header class="md:hidden flex items-center justify-between bg-lacquer-deep px-4 py-3 shrink-0 z-20 border-b border-hairline">
+      <h1 class="text-base text-kinpaku tracking-[0.15em] font-body font-semibold">LifeBridge</h1>
+      <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-champagne p-1">
         <span v-if="!mobileMenuOpen" class="text-xl">☰</span>
         <span v-else class="text-xl">✕</span>
       </button>
     </header>
 
     <!-- 手机端侧边栏遮罩 -->
-    <div v-if="mobileMenuOpen" class="md:hidden fixed inset-0 bg-black/50 z-30" @click="mobileMenuOpen = false"></div>
+    <div v-if="mobileMenuOpen" class="md:hidden fixed inset-0 bg-black/70 z-30" @click="mobileMenuOpen = false"></div>
 
     <!-- 侧边栏 -->
     <aside 
       :class="mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'"
-      class="w-60 bg-slate-900 text-white flex flex-col shrink-0 fixed md:static inset-y-0 left-0 z-40 transition-transform duration-300 md:translate-x-0">
-      <div class="hidden md:block p-5 border-b border-slate-700">
-        <h1 class="text-lg font-black tracking-wide">🌉 LifeBridge</h1>
-        <p class="text-[10px] text-slate-400 mt-0.5">AI 个人生活助理空间</p>
-      </div>
-      <div class="md:hidden p-4 border-b border-slate-700">
-        <h1 class="text-lg font-black tracking-wide">🌉 LifeBridge</h1>
-        <p class="text-[10px] text-slate-400 mt-0.5">AI 个人生活助理空间</p>
+      class="w-60 bg-lacquer-deep flex flex-col shrink-0 fixed md:static inset-y-0 left-0 z-40 transition-transform duration-300 md:translate-x-0 border-r border-hairline">
+      <div class="p-5 border-b border-hairline">
+        <h1 class="text-lg text-kinpaku tracking-[0.15em] font-body font-bold">LifeBridge</h1>
+        <p class="text-[10px] text-text-faint mt-0.5 font-mono tracking-wider">AI 个人生活助理空间</p>
       </div>
       <nav class="flex-1 py-3 space-y-0.5 px-2 overflow-y-auto" @click="mobileMenuOpen = false">
         <router-link v-for="item in navItems" :key="item.path" :to="item.path"
           class="nav-link flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm relative overflow-hidden"
-          :class="[$route.path === item.path ? 'bg-white/10 text-white font-semibold' : 'text-slate-400 hover:text-white hover:bg-white/5']">
+          :class="[$route.path === item.path ? 'bg-kinpaku/10 text-kinpaku font-semibold border border-hairline-strong' : 'text-text-muted hover:text-champagne hover:bg-white/5']">
           <span v-html="item.icon"></span>
           {{ item.label }}
         </router-link>
       </nav>
-      <div class="p-4 border-t border-slate-700 text-center text-[10px] text-slate-500">
+      <div class="p-4 border-t border-hairline text-center text-[10px] text-text-faint font-mono tracking-wider">
         100% 纯前端 · 数据本地存储 · 61h制作
       </div>
     </aside>
@@ -48,10 +44,10 @@
     </main>
 
     <!-- 手机端底部导航栏 -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around py-1.5 z-30 safe-bottom">
+    <nav class="md:hidden fixed bottom-0 inset-x-0 bg-lacquer-deep border-t border-hairline flex justify-around py-1.5 z-30 safe-bottom">
       <router-link v-for="item in bottomNavItems" :key="item.path" :to="item.path"
         class="flex flex-col items-center gap-0.5 px-1 py-1 rounded-lg text-[10px] transition-colors min-w-0"
-        :class="$route.path === item.path ? 'text-indigo-600' : 'text-slate-400'">
+        :class="$route.path === item.path ? 'text-kinpaku' : 'text-text-faint'">
         <span class="text-lg">{{ item.icon }}</span>
         <span class="truncate">{{ item.label }}</span>
       </router-link>
@@ -85,9 +81,9 @@ const bottomNavItems = [
 </script>
 
 <style scoped>
-/* 侧边栏链接动画 */
 .nav-link {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
 }
 .nav-link:active {
   transform: scale(0.96);
@@ -98,38 +94,22 @@ const bottomNavItems = [
   left: 50%;
   bottom: 2px;
   width: 0;
-  height: 2px;
-  background: rgba(255,255,255,0.5);
+  height: 1px;
+  background: oklch(84% 0.19 80.46 / 0.6);
   border-radius: 1px;
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
 .nav-link:hover::after {
-  width: 40%;
-}
-.nav-link.router-link-active::after {
-  width: 50%;
-  background: rgba(255,255,255,0.8);
+  width: 30%;
 }
 
-/* 底部安全区适配 */
 .safe-bottom {
   padding-bottom: calc(0.375rem + env(safe-area-inset-bottom, 0px));
 }
 
-/* 页面切换动画 */
-.page-enter-active {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.page-leave-active {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.page-enter-from {
-  opacity: 0;
-  transform: translateX(30px);
-}
-.page-leave-to {
-  opacity: 0;
-  transform: translateX(-30px);
-}
+.page-enter-active { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.page-leave-active { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+.page-enter-from { opacity: 0; transform: translateX(20px); }
+.page-leave-to { opacity: 0; transform: translateX(-20px); }
 </style>

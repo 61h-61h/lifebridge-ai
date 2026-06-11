@@ -1,51 +1,51 @@
 <template>
   <div class="p-4 md:p-8 space-y-4 md:space-y-6">
-    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-lg">
-      <h1 class="text-2xl md:text-3xl font-black">{{ greeting.text }}</h1>
-      <p class="mt-1 text-white/70 text-xs md:text-sm">{{ greeting.sub }}</p>
-      <p class="mt-0.5 text-white/50 text-[10px] md:text-xs">{{ today }}</p>
+    <div class="bg-gradient-to-br from-kinpaku/20 to-patina/10 p-5 md:p-8 rounded-2xl md:rounded-3xl border border-hairline-strong">
+      <h1 class="text-2xl md:text-3xl text-champagne font-display font-semibold tracking-tight">{{ greeting.text }}</h1>
+      <p class="mt-1 text-text-muted text-xs md:text-sm">{{ greeting.sub }}</p>
+      <p class="mt-0.5 text-text-faint text-[10px] md:text-xs font-mono">{{ today }}</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div v-for="card in stats" :key="card.label" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer" @click="$router.push(card.to)">
+      <div v-for="card in stats" :key="card.label" class="card p-5 hover:border-hairline-strong transition cursor-pointer" @click="$router.push(card.to)">
         <div class="text-2xl">{{ card.icon }}</div>
-        <div class="mt-2 text-2xl font-black text-slate-800">{{ card.value }}</div>
-        <div class="text-xs text-slate-400 mt-1">{{ card.label }}</div>
+        <div class="mt-2 text-2xl text-champagne font-display font-semibold">{{ card.value }}</div>
+        <div class="text-xs text-text-faint mt-1">{{ card.label }}</div>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-        <h2 class="font-bold text-slate-700 text-sm mb-3">📖 最近情绪</h2>
-        <div v-if="recentDiaries.length === 0" class="text-xs text-slate-400 py-4 text-center">还没有写过日记，去记录第一篇吧</div>
+      <div class="card p-5">
+        <h2 class="text-champagne text-sm mb-3 font-body font-semibold">📖 最近情绪</h2>
+        <div v-if="recentDiaries.length === 0" class="text-xs text-text-faint py-4 text-center">还没有写过日记，去记录第一篇吧</div>
         <div v-else class="space-y-2">
-          <div v-for="d in recentDiaries" :key="d.id" class="p-3 bg-slate-50 rounded-xl text-xs">
+          <div v-for="d in recentDiaries" :key="d.id" class="p-3 bg-lacquer rounded-xl text-xs border border-hairline">
             <div class="flex justify-between">
-              <span class="font-semibold text-slate-700">{{ d.mood }}</span>
-              <span class="text-slate-400">{{ d.createdAt }}</span>
+              <span class="text-text-warm font-semibold">{{ d.mood }}</span>
+              <span class="text-text-faint">{{ d.createdAt }}</span>
             </div>
-            <p class="text-slate-500 mt-1 line-clamp-2">{{ d.content }}</p>
+            <p class="text-text-muted mt-1 line-clamp-2">{{ d.content }}</p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-        <h2 class="font-bold text-slate-700 text-sm mb-3">✅ 今日待办</h2>
-        <div v-if="pendingTasks.length === 0" class="text-xs text-slate-400 py-4 text-center">暂无待办任务</div>
+      <div class="card p-5">
+        <h2 class="text-champagne text-sm mb-3 font-body font-semibold">✅ 今日待办</h2>
+        <div v-if="pendingTasks.length === 0" class="text-xs text-text-faint py-4 text-center">暂无待办任务</div>
         <div v-else class="space-y-2">
-          <div v-for="t in pendingTasks" :key="t.id" class="p-3 bg-slate-50 rounded-xl text-xs flex items-center gap-2">
+          <div v-for="t in pendingTasks" :key="t.id" class="p-3 bg-lacquer rounded-xl text-xs flex items-center gap-2 border border-hairline">
             <span class="w-2 h-2 rounded-full" :class="priorityColor(t.priority)"></span>
-            <span class="text-slate-700">{{ t.title }}</span>
+            <span class="text-text-warm">{{ t.title }}</span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
-      <h2 class="font-bold text-slate-700 text-sm mb-3">🧠 AI 生命洞察</h2>
-      <p v-if="aiInsight" class="text-sm text-slate-600 leading-relaxed">{{ aiInsight }}</p>
-      <p v-else class="text-xs text-slate-400">点击按钮，让 AI 为你生成今日洞察</p>
-      <button @click="generateInsight" :disabled="insightLoading" class="mt-3 px-4 py-2 bg-indigo-600 text-white text-xs rounded-xl hover:bg-indigo-700 transition disabled:opacity-50">
+    <div class="card p-5">
+      <h2 class="text-champagne text-sm mb-3 font-body font-semibold">🧠 AI 生命洞察</h2>
+      <p v-if="aiInsight" class="text-sm text-text-warm leading-relaxed">{{ aiInsight }}</p>
+      <p v-else class="text-xs text-text-faint">点击按钮，让 AI 为你生成今日洞察</p>
+      <button @click="generateInsight" :disabled="insightLoading" class="mt-3 px-4 py-2 bg-kinpaku/15 text-kinpaku text-xs rounded-xl hover:bg-kinpaku/25 transition disabled:opacity-50 border border-hairline-strong">
         {{ insightLoading ? 'AI 思考中...' : '✨ 获取今日洞察' }}
       </button>
     </div>
@@ -59,7 +59,7 @@ import { askAI } from '../services/ai';
 
 const now = new Date();
 const hour = now.getHours();
-const greeting = hour < 6 ? { text: '夜深了，生活家 🌙', sub: '好好休息，明天会更好' } : hour < 12 ? { text: '早安，生活家 🌅', sub: '新的一天，元气满满' } : hour < 14 ? { text: '午安，生活家 ☀️', sub: '中场休息，继续前行' } : hour < 18 ? { text: '下午好，生活家 🌤️', sub: '时光正好，不负韶华' } : { text: '晚安，生活家 🌙', sub: '回顾今日，安然入梦' };
+const greeting = hour < 6 ? { text: '夜深了，生活家', sub: '好好休息，明天会更好' } : hour < 12 ? { text: '早安，生活家', sub: '新的一天，元气满满' } : hour < 14 ? { text: '午安，生活家', sub: '中场休息，继续前行' } : hour < 18 ? { text: '下午好，生活家', sub: '时光正好，不负韶华' } : { text: '晚安，生活家', sub: '回顾今日，安然入梦' };
 const today = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
 
 const recentDiaries = computed(() => storage.get(KEYS.DIARIES).slice(0, 3));
@@ -72,8 +72,8 @@ const stats = computed(() => [
 ]);
 
 const priorityColor = (p) => {
-  const map = { urgent: 'bg-red-500', important: 'bg-yellow-500', normal: 'bg-green-500', low: 'bg-blue-500' };
-  return map[p] || 'bg-slate-400';
+  const map = { urgent: 'bg-vermilion', important: 'bg-kinpaku', normal: 'bg-patina', low: 'bg-graphite-2' };
+  return map[p] || 'bg-graphite';
 };
 
 const aiInsight = ref('');
