@@ -8,9 +8,9 @@
           LifeBridge<span class="text-slate-400 font-normal">.</span>
         </router-link>
         <div class="hidden md:flex space-x-10 text-sm font-medium text-slate-500">
-          <button @click="activeTab = 'philosophy'" :class="activeTab === 'philosophy' ? 'text-slate-800 font-semibold' : 'hover:text-slate-800'" class="transition-colors bg-transparent border-none cursor-pointer">设计理念</button>
-          <button @click="activeTab = 'features'" :class="activeTab === 'features' ? 'text-slate-800 font-semibold' : 'hover:text-slate-800'" class="transition-colors bg-transparent border-none cursor-pointer">功能特性</button>
-          <button @click="activeTab = 'about'" :class="activeTab === 'about' ? 'text-slate-800 font-semibold' : 'hover:text-slate-800'" class="transition-colors bg-transparent border-none cursor-pointer">关于</button>
+          <button @click="$router.push({ path: '/info/philosophy' })" :class="activeTab === 'philosophy' ? 'text-slate-800 font-semibold' : 'hover:text-slate-800'" class="transition-colors bg-transparent border-none cursor-pointer">设计理念</button>
+          <button @click="$router.push({ path: '/info/features' })" :class="activeTab === 'features' ? 'text-slate-800 font-semibold' : 'hover:text-slate-800'" class="transition-colors bg-transparent border-none cursor-pointer">功能特性</button>
+          <button @click="$router.push({ path: '/info/about' })" :class="activeTab === 'about' ? 'text-slate-800 font-semibold' : 'hover:text-slate-800'" class="transition-colors bg-transparent border-none cursor-pointer">关于</button>
         </div>
         <router-link to="/dashboard" class="bg-slate-800 text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-slate-700 transition-all transform hover:scale-105 shadow-sm hover:shadow-md">
           开启体验
@@ -24,7 +24,7 @@
 
         <!-- Mobile tab selector -->
         <div class="md:hidden flex gap-2 mb-10">
-          <button v-for="t in tabs" :key="t.key" @click="activeTab = t.key"
+          <button v-for="t in tabs" :key="t.key" @click="$router.push({ path: '/info/' + t.key })"
             :class="activeTab === t.key ? 'bg-slate-800 text-white' : 'bg-white text-slate-500 border border-slate-200'"
             class="flex-1 px-4 py-2.5 rounded-full text-sm font-medium transition">{{ t.short }}</button>
         </div>
@@ -212,10 +212,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
-const activeTab = ref(route.query.tab || 'philosophy');
+const activeTab = ref(route.params.tab || 'philosophy');
+watch(() => route.params.tab, (newTab) => { if (newTab) activeTab.value = newTab; });
 const tabs = [
   { key: 'philosophy', short: '设计理念' },
   { key: 'features', short: '功能特性' },

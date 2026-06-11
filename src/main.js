@@ -17,7 +17,8 @@ import Settings from './views/Settings.vue'
 
 const routes = [
   { path: '/', component: Landing },
-  { path: '/info', component: Info },
+  { path: '/info/:tab', component: Info },
+  { path: '/info', redirect: '/info/philosophy' },
   { path: '/dashboard', component: Dashboard },
   { path: '/diary', component: Diary },
   { path: '/tasks', component: Tasks },
