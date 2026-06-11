@@ -1,8 +1,8 @@
-﻿<template>
+<template>
   <div class="p-4 md:p-8 space-y-4 md:space-y-6">
     <div class="border-b pb-4 flex justify-between items-center">
       <div>
-        <h1 class="text-2xl font-black text-slate-800">✅ 四象限任务板</h1>
+        <h1 class="text-xl md:text-2xl font-black text-slate-800">✅ 四象限任务板</h1>
         <p class="text-xs text-slate-400 mt-1">按照重要与紧急程度管理任务</p>
       </div>
       <button @click="showForm = !showForm" class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition" :class="showForm ? 'btn-cancel' : 'btn-add'">
@@ -18,7 +18,15 @@
         <option value="q3">🟢 紧急不重要</option>
         <option value="q4">🔵 不重要不紧急</option>
       </select>
-      <button @click="addTask" class="px-6 py-2 bg-slate-900 text-white text-sm rounded-xl hover:bg-slate-800 transition">确认添加</button>
+      <div class="flex items-center gap-3 flex-wrap">
+        <label class="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
+          <input type="checkbox" v-model="form.useAI" class="rounded" />
+          <span>🤖 AI 智能优化</span>
+        </label>
+        <button @click="addTask" :disabled="taskLoading" class="px-6 py-2 bg-slate-900 text-white text-sm rounded-xl hover:bg-slate-800 transition disabled:opacity-50 btn-save">
+          {{ taskLoading ? 'AI 优化中...' : '确认添加' }}
+        </button>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -32,12 +40,13 @@
             <div class="flex-1">
               <span class="text-slate-700 font-medium">{{ t.title }}</span>
               <div v-if="t.aiOptimized" class="text-indigo-600 mt-1">✨ {{ t.aiOptimized }}</div>
+              <div v-if="t.optimizing" class="text-indigo-400 mt-1 animate-pulse text-[10px]">AI 优化中...</div>
             </div>
             <div class="flex flex-col gap-1">
               <button @click="optimizeTask(t)" :disabled="t.optimizing" class="text-indigo-400 hover:text-indigo-600 text-[10px]">
-                {{ t.optimizing ? '...' : 'AI优化' }}
+                {{ t.optimizing ? '...' : 'AI' }}
               </button>
-              <button @click="deleteTask(t.id)" class="text-red-400 hover:text-red-600 text-[10px]">✕</button>
+              <button @click="deleteTask(t.id)" class="text-red-400 hover:text-red-600 text-[10px] btn-delete">✕</button>
             </div>
           </div>
           <div v-if="getTasks(q.key).length === 0" class="text-center text-slate-300 text-xs py-4">暂无任务</div>
@@ -55,6 +64,7 @@ import { askAI } from '../services/ai';
 const showForm = ref(false);
 const form = ref({ title: '', quadrant: 'q2', useAI: false });
 const taskVersion = ref(0);
+const taskLoading = ref(false);
 const tasks = computed(() => {
   taskVersion.value;
   return storage.get(KEYS.TASKS);
@@ -75,12 +85,34 @@ const getTasks = (quadrant) => {
   return tasks.value.filter(t => t.quadrant === quadrant);
 };
 
-const addTask = () => {
+const addTask = async () => {
   if (!form.value.title.trim()) return alert('请输入任务名称');
-  storage.add(KEYS.TASKS, { ...form.value, done: false });
-  form.value = { title: '', quadrant: 'q2' };
-  showForm.value = false;
-  refreshTasks();
+  const taskData = { ...form.value, done: false };
+  const useAI = form.value.useAI;
+  form.value = { title: '', quadrant: 'q2', useAI: false };
+  
+  if (useAI && taskData.title.trim()) {
+    showForm.value = false;
+    taskLoading.value = true;
+    const tempId = Date.now();
+    storage.add(KEYS.TASKS, { ...taskData, optimizing: true, aiOptimized: '', id: tempId });
+    refreshTasks();
+    try {
+      const res = await askAI({
+        systemPrompt: '你是一个任务管理专家，请优化用户的任务描述，让它更具体、更可执行。返回简洁的优化建议。',
+        userMessage: '任务：' + taskData.title
+      });
+      storage.update(KEYS.TASKS, tempId, { aiOptimized: res, optimizing: false });
+    } catch (e) {
+      storage.update(KEYS.TASKS, tempId, { aiOptimized: '⚠️ ' + e.message, optimizing: false });
+    }
+    refreshTasks();
+    taskLoading.value = false;
+  } else {
+    storage.add(KEYS.TASKS, { ...taskData, done: false });
+    showForm.value = false;
+    refreshTasks();
+  }
 };
 
 const toggleTask = (task) => {
@@ -101,7 +133,7 @@ const optimizeTask = async (task) => {
   try {
     const res = await askAI({
       systemPrompt: '你是一个任务管理专家，请优化用户的任务描述，让它更具体、更可执行。返回简洁的优化建议。',
-      userMessage: `任务：${task.title}`
+      userMessage: '任务：' + task.title
     });
     storage.update(KEYS.TASKS, task.id, { aiOptimized: res, optimizing: false });
   } catch (e) {

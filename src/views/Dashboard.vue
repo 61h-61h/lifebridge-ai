@@ -1,7 +1,7 @@
-﻿<template>
+<template>
   <div class="p-4 md:p-8 space-y-4 md:space-y-6">
     <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-5 md:p-8 rounded-2xl md:rounded-3xl shadow-lg">
-      <h1 class="text-2xl md:text-3xl font-black">早安，生活家 🌅</h1>
+      <h1 class="text-2xl md:text-3xl font-black">{{ greeting.text }}</h1>
       <p class="mt-1 text-white/70 text-xs md:text-sm">{{ greeting.sub }}</p>
       <p class="mt-0.5 text-white/50 text-[10px] md:text-xs">{{ today }}</p>
     </div>
@@ -59,7 +59,7 @@ import { askAI } from '../services/ai';
 
 const now = new Date();
 const hour = now.getHours();
-const greeting = hour < 6 ? { text: '??????? ??', sub: '??????????' } : hour < 12 ? { text: '?????? ??', sub: '?????????' } : hour < 14 ? { text: '?????? ??', sub: '?????????' } : hour < 18 ? { text: '??????? ???', sub: '?????????' } : { text: '?????? ??', sub: '?????????' };
+const greeting = hour < 6 ? { text: '夜深了，生活家 🌙', sub: '好好休息，明天会更好' } : hour < 12 ? { text: '早安，生活家 🌅', sub: '新的一天，元气满满' } : hour < 14 ? { text: '午安，生活家 ☀️', sub: '中场休息，继续前行' } : hour < 18 ? { text: '下午好，生活家 🌤️', sub: '时光正好，不负韶华' } : { text: '晚安，生活家 🌙', sub: '回顾今日，安然入梦' };
 const today = now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' });
 
 const recentDiaries = computed(() => storage.get(KEYS.DIARIES).slice(0, 3));
