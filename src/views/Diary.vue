@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <div class="border-b border-slate-100 pb-4">
-      <h1 class="text-2xl font-bold text-slate-800 font-heading handwritten">📉 情绪日记与树洞</h1>
+      <h1 class="text-2xl font-bold text-slate-800 font-heading handwritten">情绪日记与树洞</h1>
       <p class="text-sm text-slate-400 mt-1">记录心情，AI 倾听你的心声</p>
     </div>
     <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
@@ -12,7 +12,7 @@
       <input v-model="form.title" placeholder="给今天起个标题（可选）" class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-slate-200 placeholder:text-slate-300 handwritten" />
       <textarea v-model="form.content" rows="5" placeholder="写下你此刻的感受..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-slate-200 resize-none placeholder:text-slate-300"></textarea>
       <div class="flex justify-between items-center">
-        <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-slate-50 text-slate-600 text-sm rounded-xl hover:bg-slate-100 transition disabled:opacity-50 font-body">{{ aiLoading ? 'AI 倾听中...' : '💻 让 AI 回应' }}</button>
+        <button @click="aiComfort" :disabled="aiLoading" class="px-4 py-2 bg-slate-50 text-slate-600 text-sm rounded-xl hover:bg-slate-100 transition disabled:opacity-50 font-body">{{ aiLoading ? 'AI 倾听中...' : '让 AI 回应' }}</button>
         <button @click="saveDiary" class="px-6 py-2 bg-slate-800 text-white text-sm rounded-xl hover:bg-slate-700 hover:scale-[1.02] transition btn-save font-body">保存日记</button>
       </div>
       <div v-if="aiReply" class="p-4 bg-slate-50 rounded-2xl text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">{{ aiReply }}</div>
@@ -31,6 +31,7 @@
   </div>
 </template>
 <script setup>
+import { PenLine, MessageCircle, Trash2 } from 'lucide-vue-next';
 import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
 const moods = ['😉','😊','😓','😩','😨','😹','😾','😀'];
 const form = ref({ mood:'😉',title:'',content:'' }); const aiReply = ref(''); const aiLoading = ref(false);

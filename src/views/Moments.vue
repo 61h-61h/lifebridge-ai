@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
     <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
-      <div><h1 class="text-2xl font-bold text-slate-800 font-heading">👰 朋友圈</h1><p class="text-sm text-slate-400 mt-1">记录你的生活瞬间</p></div>
-      <button @click="showForm = !showForm" class="px-5 py-2.5 bg-slate-800 text-white text-sm rounded-xl hover:bg-slate-700 hover:scale-[1.02] transition font-body min-h-[44px]" :class="showForm ? 'btn-cancel' : 'btn-add'">{{ showForm ? '取消' : '+ 发布动态' }}</button>
+      <div><h1 class="text-2xl font-bold text-slate-800 font-heading">朋友圈</h1><p class="text-sm text-slate-400 mt-1">记录你的生活瞬间</p></div>
+      <button @click="showForm = !showForm" class="px-5 py-2.5 bg-slate-800 text-white text-sm rounded-xl hover:bg-slate-700 hover:scale-[1.02] transition font-body min-h-[44px]" :class="showForm ? 'btn-cancel' : 'btn-add'">{{ showForm ? '取消' : '发布动态' }}</button>
     </div>
     <div v-if="showForm" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm space-y-3">
       <textarea v-model="form.content" rows="3" placeholder="此刻的想法..." class="w-full p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-slate-200 resize-none placeholder:text-slate-300"></textarea>
@@ -24,13 +24,14 @@
         </div>
         <div v-if="m.isPrivate && !isUnlocked && filter !== 'private'"><p class="mt-3 text-sm text-slate-400">🔀 隐私内容，点击查看</p></div>
         <div v-else-if="m.isPrivate && !isUnlocked && filter === 'private'"><div class="mt-3 text-sm text-slate-400">🔀 需要密码查看</div></div>
-        <div v-else><p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ m.content }}</p><img v-if="m.image" :src="m.image" class="mt-3 rounded-2xl max-h-80 w-full object-cover" /><div class="mt-3 flex gap-4 text-sm text-slate-400"><button @click="aiComment(m)" :disabled="m.aiLoading" class="hover:text-slate-500 transition min-h-[36px]">{{ m.aiLoading ? '💻 思考中...' : '💻 AI 评论' }}</button></div><div v-if="m.aiComment" class="mt-2 p-3 bg-slate-50 rounded-2xl text-sm text-slate-700">💻 {{ m.aiComment }}</div></div>
+        <div v-else><p class="mt-3 text-sm text-slate-600 leading-relaxed">{{ m.content }}</p><img v-if="m.image" :src="m.image" class="mt-3 rounded-2xl max-h-80 w-full object-cover" /><div class="mt-3 flex gap-4 text-sm text-slate-400"><button @click="aiComment(m)" :disabled="m.aiLoading" class="hover:text-slate-500 transition min-h-[36px]">{{ m.aiLoading ? '思考中...' : 'AI 评论' }}</button></div><div v-if="m.aiComment" class="mt-2 p-3 bg-slate-50 rounded-2xl text-sm text-slate-700">{{ m.aiComment }}</div></div>
       </div>
-      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-12">还没有动态，记录你的生活瞬间吧 📲</div>
+      <div v-if="filteredMoments.length === 0" class="text-center text-slate-400 text-sm py-12">还没有动态，记录你的生活瞬间吧 </div>
     </div>
   </div>
 </template>
 <script setup>
+import { Users, Trash2, MessageCircle } from 'lucide-vue-next';
 import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
 const PRIVACY_PASSWORD_KEY = 'lb_privacy_password'; const quickMoods = ['😉','😹','😩','😌','😫','😀'];
 const form = ref({content:'',mood:'',isPrivate:false,image:''}); const filter = ref('all'); const showForm = ref(false); const isUnlocked = ref(false); const privacyPassword = ref(localStorage.getItem(PRIVACY_PASSWORD_KEY)||'');

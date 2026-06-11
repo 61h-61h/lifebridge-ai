@@ -64,7 +64,7 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
           <div v-for="card in philosophyCards" :key="card.title" class="group">
-            <div class="h-40 md:h-52 rounded-3xl bg-gradient-to-br from-slate-50 to-slate-100 mb-5 md:mb-8 flex items-center justify-center text-4xl md:text-6xl">{{ card.icon }}</div>
+            <div class="h-40 md:h-52 rounded-3xl bg-gradient-to-br from-slate-50 to-slate-100 mb-5 md:mb-8 flex items-center justify-center text-4xl md:text-6xl"><component :is="card.icon" :size="48" class="md:w-[60px] md:h-[60px]" /></div>
             <h3 class="text-lg md:text-xl font-medium mb-2 md:mb-3 text-slate-800 font-heading">{{ card.title }}</h3>
             <p class="text-slate-500 leading-relaxed text-sm md:text-base">{{ card.desc }}</p>
           </div>
@@ -83,7 +83,7 @@
         </div>
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           <div v-for="f in features" :key="f.title" class="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition">
-            <div class="text-2xl md:text-3xl mb-2 md:mb-3">{{ f.icon }}</div>
+            <div class="mb-2 md:mb-3"><component :is="f.icon" :size="24" class="md:w-7 md:h-7 text-slate-500" /></div>
             <h3 class="font-bold text-slate-800 mb-1 md:mb-2 font-heading text-xs md:text-base">{{ f.title }}</h3>
             <p class="text-[10px] md:text-sm text-slate-500">{{ f.desc }}</p>
           </div>
@@ -130,22 +130,23 @@
 </template>
 
 <script setup>
+import { BookHeart, CheckSquare, Clock, Users, MessageCircle, Wrench, Cpu, Shield, Sparkles, Heart } from 'lucide-vue-next';
 import { ref } from 'vue';
 const menuOpen = ref(false);
 const philosophyCards = [
-  { icon:'📉', title:'情绪关怀', desc:'记录每天的心情变化，AI 作为温暖倾听者给予回应。所有的喜怒哀乐，都值得被看见。' },
-  { icon:'✅', title:'高效规划', desc:'四象限任务板帮你分清轻重缓急，AI 智能优化让每个任务都更具体可执行。' },
-  { icon:'🔔', title:'时光珍藏', desc:'记录人生每个里程碑，时光纪念馆自动计算纪念日，帮你记住每一个重要时刻。' },
+  { icon: BookHeart, title:'情绪关怀', desc:'记录每天的心情变化，AI 作为温暖倾听者给予回应。所有的喜怒哀乐，都值得被看见。' },
+  { icon: CheckSquare, title:'高效规划', desc:'四象限任务板帮你分清轻重缓急，AI 智能优化让每个任务都更具体可执行。' },
+  { icon: Clock, title:'时光珍藏', desc:'记录人生每个里程碑，时光纪念馆自动计算纪念日，帮你记住每一个重要时刻。' },
 ];
 const features = [
-  { icon:'📉', title:'情绪日记', desc:'记录心情 · AI 倾听回应 · 情绪追踪' },
-  { icon:'✅', title:'四象限任务板', desc:'重要/紧急分类 · AI 任务优化 · 进度跟踪' },
-  { icon:'🔔', title:'时光纪念馆', desc:'里程碑记录 · 纪念日提醒 · 图片上传' },
-  { icon:'👰', title:'朋友圈', desc:'生活瞬间 · 隐私保护 · AI 趣味评论' },
-  { icon:'💻', title:'AI 对话', desc:'多模型切换 · 对话历史 · 自由交流' },
-  { icon:'🧰', title:'实用工具箱', desc:'番茄钟 · 计算器 · 起名器 · 习惯打卡' },
-  { icon:'🧥', title:'AI 脑核中心', desc:'多供应商 API · 本地存储 · 自由切换' },
-  { icon:'🔐', title:'数据隐私', desc:'纯前端存储 · 无服务器 · 绝对安全' },
+  { icon: BookHeart, title:'情绪日记', desc:'记录心情 · AI 倾听回应 · 情绪追踪' },
+  { icon: CheckSquare, title:'四象限任务板', desc:'重要/紧急分类 · AI 任务优化 · 进度跟踪' },
+  { icon: Clock, title:'时光纪念馆', desc:'里程碑记录 · 纪念日提醒 · 图片上传' },
+  { icon: Users, title:'朋友圈', desc:'生活瞬间 · 隐私保护 · AI 趣味评论' },
+  { icon: MessageCircle, title:'AI 对话', desc:'多模型切换 · 对话历史 · 自由交流' },
+  { icon: Wrench, title:'实用工具箱', desc:'番茄钟 · 计算器 · 起名器 · 习惯打卡' },
+  { icon: Cpu, title:'AI 脑核中心', desc:'多供应商 API · 本地存储 · 自由切换' },
+  { icon: Shield, title:'数据隐私', desc:'纯前端存储 · 无服务器 · 绝对安全' },
 ];
 </script>
 

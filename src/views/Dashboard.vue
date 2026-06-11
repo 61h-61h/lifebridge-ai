@@ -16,7 +16,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
-        <h2 class="font-bold text-slate-800 text-sm font-heading mb-3">📉 最近情绪</h2>
+        <h2 class="font-bold text-slate-800 text-sm font-heading mb-3 flex items-center gap-1.5"><BookHeart :size="16" /> 最近情绪</h2>
         <div v-if="recentDiaries.length === 0" class="text-sm text-slate-400 py-4 text-center">还没有写过日记，去记录第一篇吧</div>
         <div v-else class="space-y-2">
           <div v-for="d in recentDiaries" :key="d.id" class="p-3 bg-slate-50 rounded-2xl text-sm">
@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
-        <h2 class="font-bold text-slate-800 text-sm font-heading mb-3">✅ 今日待办</h2>
+        <h2 class="font-bold text-slate-800 text-sm font-heading mb-3 flex items-center gap-1.5"><CheckSquare :size="16" /> 今日待办</h2>
         <div v-if="pendingTasks.length === 0" class="text-sm text-slate-400 py-4 text-center">暂无待办任务</div>
         <div v-else class="space-y-2">
           <div v-for="t in pendingTasks" :key="t.id" class="p-3 bg-slate-50 rounded-2xl text-sm flex items-center gap-2">
@@ -38,23 +38,24 @@
     </div>
 
     <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
-      <h2 class="font-bold text-slate-800 text-sm font-heading mb-3">🧥 AI 生命洞察</h2>
+      <h2 class="font-bold text-slate-800 text-sm font-heading mb-3 flex items-center gap-1.5"><Sparkles :size="16" /> AI 生命洞察</h2>
       <p v-if="aiInsight" class="text-sm text-slate-600 leading-relaxed">{{ aiInsight }}</p>
       <p v-else class="text-sm text-slate-400">点击按钮，让 AI 为你生成今日洞察</p>
       <button @click="generateInsight" :disabled="insightLoading" class="mt-3 px-5 py-2.5 bg-slate-800 text-white text-sm rounded-xl hover:bg-slate-700 hover:scale-[1.02] transition disabled:opacity-50 font-body">
-        {{ insightLoading ? 'AI 思考中...' : '✨ 获取今日洞察' }}
+        {{ insightLoading ? 'AI 思考中...' : '获取今日洞察' }}
       </button>
     </div>
   </div>
 </template>
 <script setup>
+import { BookHeart, CheckSquare, Clock, Sparkles } from 'lucide-vue-next';
 import { ref, computed } from 'vue'; import { storage, KEYS } from '../services/storage'; import { askAI } from '../services/ai';
 const now = new Date(); const hour = now.getHours();
 const greeting = hour < 6 ? { text:'夜深了，生活家 🌙',sub:'好好休息，明天会更好' } : hour < 12 ? { text:'早安，生活家 ☀️',sub:'新的一天，元气满满' } : hour < 14 ? { text:'午安，生活家 ☀️',sub:'中场休息，继续前行' } : hour < 18 ? { text:'下午好，生活家 🌤️',sub:'时光正好，不负韶华' } : { text:'晚安，生活家 🌙',sub:'回顾今日，安然入梦' };
 const today = now.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
 const recentDiaries = computed(() => storage.get(KEYS.DIARIES).slice(0,3));
 const pendingTasks = computed(() => storage.get(KEYS.TASKS).filter(t=>!t.done).slice(0,5));
-const stats = computed(() => [{icon:'📉',label:'日记篇数',value:storage.get(KEYS.DIARIES).length,to:'/diary'},{icon:'✅',label:'待办任务',value:storage.get(KEYS.TASKS).filter(t=>!t.done).length,to:'/tasks'},{icon:'🔔',label:'里程碑',value:storage.get(KEYS.MILESTONES).length,to:'/timeline'}]);
+const stats = computed(() => [{icon:'📝',label:'日记篇数',value:storage.get(KEYS.DIARIES).length,to:'/diary'},{icon:'📋',label:'待办任务',value:storage.get(KEYS.TASKS).filter(t=>!t.done).length,to:'/tasks'},{icon:'⏳',label:'里程碑',value:storage.get(KEYS.MILESTONES).length,to:'/timeline'}]);
 const aiInsight = ref(''); const insightLoading = ref(false);
 const generateInsight = async () => { insightLoading.value=true; try{ const d=storage.get(KEYS.DIARIES).slice(0,5).map(d=>d.content).join('；'); const t=storage.get(KEYS.TASKS).filter(t=>!t.done).map(t=>t.title).join('、'); const r=await askAI({systemPrompt:'你是一个温暖的生活助理，请用一句话给出今天的生活洞察和建议，语气亲切。',userMessage:'最近日记：'+(d||'暂无')+'。待办：'+(t||'暂无')+'。请给我一句话的洞察。'}); aiInsight.value=r; }catch(e){aiInsight.value='⚠️ '+e.message;} insightLoading.value=false; };
 </script>

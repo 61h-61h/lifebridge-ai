@@ -1,17 +1,17 @@
 <template>
   <div class="flex flex-col chat-height">
     <div class="border-b border-slate-100 pb-2 md:pb-3 flex justify-between items-center shrink-0">
-      <div><h1 class="text-lg md:text-2xl font-bold text-slate-800 font-heading">💻 AI 对话</h1><p class="hidden md:block text-sm text-slate-400 mt-1">与 AI 自由交流，选择不同的智能大脑</p></div>
+      <div><h1 class="text-lg md:text-2xl font-bold text-slate-800 font-heading"><MessageCircle :size="20" class="inline-block mr-1.5" />AI 对话</h1><p class="hidden md:block text-sm text-slate-400 mt-1">与 AI 自由交流，选择不同的智能大脑</p></div>
       <div class="relative">
         <button @click="showHistory = !showHistory" class="px-2 md:px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs md:text-sm transition flex items-center gap-1 md:gap-1.5 text-slate-600 font-body min-h-[44px]">
-          <span>📜</span><span class="hidden sm:inline">历史记录</span>
+          <span></span><span class="hidden sm:inline">历史记录</span>
           <span v-if="conversations.length > 0" class="bg-slate-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">{{ conversations.length }}</span>
         </button>
         <transition name="dropdown">
           <div v-if="showHistory" class="absolute right-0 top-full mt-2 w-72 md:w-80 bg-white rounded-3xl shadow-lg border border-slate-100 z-30 flex flex-col max-h-[60vh] md:max-h-[70vh]">
-            <div class="p-3 md:p-4 border-b border-slate-100 flex justify-between items-center shrink-0"><h2 class="font-bold text-slate-800 text-sm font-heading">📜 对话历史</h2><button @click="showHistory = false" class="text-slate-400 hover:text-slate-600 text-lg leading-none min-w-[44px] min-h-[44px] flex items-center justify-center">&times;</button></div>
+            <div class="p-3 md:p-4 border-b border-slate-100 flex justify-between items-center shrink-0"><h2 class="font-bold text-slate-800 text-sm font-heading"> 对话历史</h2><button @click="showHistory = false" class="text-slate-400 hover:text-slate-600 text-lg leading-none min-w-[44px] min-h-[44px] flex items-center justify-center">&times;</button></div>
             <div class="flex-1 overflow-y-auto p-2 md:p-3 space-y-1 md:space-y-1.5">
-              <button @click="startNewChat" class="w-full p-2 md:p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-2xl text-xs md:text-sm text-slate-600 font-medium transition">✏️ 新建对话</button>
+              <button @click="startNewChat" class="w-full p-2 md:p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-2xl text-xs md:text-sm text-slate-600 font-medium transition">新建对话</button>
               <div v-if="conversations.length === 0" class="text-center text-slate-400 text-xs md:text-sm py-6">暂无历史对话</div>
               <div v-for="conv in conversations" :key="conv.id" @click="loadConversation(conv)" :class="currentConvId === conv.id ? 'bg-slate-50 border-slate-200' : 'bg-white hover:bg-slate-50 border-transparent'" class="p-2 md:p-3 border rounded-2xl cursor-pointer transition group">
                 <div class="flex justify-between items-start"><div class="text-xs md:text-sm text-slate-700 truncate flex-1">{{ conv.title }}</div><button @click.stop="deleteConversation(conv.id)" class="text-slate-300 hover:text-rose-400 text-sm ml-2 opacity-0 group-hover:opacity-100 transition shrink-0">&times;</button></div>
@@ -27,7 +27,7 @@
       <button v-for="prov in providers" :key="prov.key" @click="selectProvider(prov.key)" :class="selectedProvider === prov.key ? 'bg-slate-800 text-white' : 'bg-white text-slate-500 hover:bg-slate-50 border border-slate-100'" class="px-2 md:px-4 py-1.5 md:py-2 rounded-xl text-[11px] md:text-sm transition hover:scale-[1.02] font-body min-h-[36px] md:min-h-[40px]">{{ prov.icon }} {{ prov.name }}</button>
     </div>
     <div class="flex-1 overflow-y-auto py-2 md:py-3" ref="chatContainer">
-      <div v-if="messages.length === 0" class="text-center text-slate-400 py-12 md:py-20 text-sm">开始与 AI 对话吧 💬</div>
+      <div v-if="messages.length === 0" class="text-center text-slate-400 py-12 md:py-20 text-sm">开始与 AI 对话吧 </div>
       <div class="space-y-3 md:space-y-4 w-full max-w-4xl mx-auto">
         <div v-for="msg in messages" :key="msg.id" :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'" class="max-w-[90%] md:max-w-[80%]">
           <div :class="msg.role === 'user' ? 'bg-slate-800 text-white' : 'bg-white border border-slate-100 shadow-sm'" class="p-3 md:p-4 rounded-2xl text-xs md:text-sm leading-relaxed whitespace-pre-wrap">{{ msg.content }}</div>
@@ -46,6 +46,7 @@
   </div>
 </template>
 <script setup>
+import { MessageCircle, Clock, Trash2, Plus } from 'lucide-vue-next';
 import { ref, nextTick, onMounted } from 'vue'; import { askAI } from '../services/ai';
 const CONVERSATIONS_KEY = 'lb_conversations'; const CURRENT_CONV_KEY = 'lb_current_conversation';
 const providers = [{key:'zhipu',name:'智谱清言',icon:'🧥'},{key:'deepseek',name:'DeepSeek',icon:'💻'},{key:'qwen',name:'通义千问',icon:'👰'},{key:'doubao',name:'豆包',icon:'🫀'},{key:'yuanbao',name:'腾讯元宝',icon:'💂'}];

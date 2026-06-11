@@ -44,7 +44,7 @@
 
           <div class="space-y-4 md:space-y-10">
             <div v-for="item in philosophyItems" :key="item.title" class="bg-white p-5 md:p-8 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
-              <div class="text-3xl md:text-5xl mb-3 md:mb-4">{{ item.icon }}</div>
+              <div class="mb-3 md:mb-4"><component :is="item.icon" :size="40" class="md:w-12 md:h-12 text-slate-400" /></div>
               <h2 class="text-lg md:text-2xl font-bold text-slate-800 font-heading mb-2 md:mb-3">{{ item.title }}</h2>
               <div class="space-y-2 md:space-y-3 text-sm md:text-base text-slate-600 leading-relaxed">
                 <p v-for="p in item.paragraphs" :key="p">{{ p }}</p>
@@ -61,7 +61,7 @@
           <div class="space-y-3 md:space-y-8">
             <div v-for="f in featureDetails" :key="f.title" class="bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm">
               <div class="flex items-start gap-3 md:gap-4">
-                <div class="text-2xl md:text-4xl shrink-0">{{ f.icon }}</div>
+                <div class="shrink-0"><component :is="f.icon" :size="28" class="md:w-9 md:h-9 text-slate-400" /></div>
                 <div class="flex-1 min-w-0">
                   <h3 class="font-bold text-base md:text-xl text-slate-800 font-heading mb-1 md:mb-2">{{ f.title }}</h3>
                   <p class="text-slate-500 text-xs md:text-sm mb-2 md:mb-3">{{ f.desc }}</p>
@@ -90,17 +90,17 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
               <div class="p-4 md:p-6 bg-white rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm text-center">
-                <div class="text-2xl md:text-4xl mb-2 md:mb-3">🔐</div>
+                <div class="mb-2 md:mb-3"><Shield :size="28" class="md:w-9 md:h-9 text-slate-400 mx-auto" /></div>
                 <h3 class="font-bold text-slate-800 mb-1 md:mb-2 font-heading text-sm md:text-base">隐私至上</h3>
                 <p class="text-xs md:text-sm text-slate-500">所有数据存储在浏览器的 localStorage 中，不上传任何服务器。</p>
               </div>
               <div class="p-4 md:p-6 bg-white rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm text-center">
-                <div class="text-2xl md:text-4xl mb-2 md:mb-3">🧥</div>
+                <div class="mb-2 md:mb-3"><Cpu :size="28" class="md:w-9 md:h-9 text-slate-400 mx-auto" /></div>
                 <h3 class="font-bold text-slate-800 mb-1 md:mb-2 font-heading text-sm md:text-base">多AI接入</h3>
                 <p class="text-xs md:text-sm text-slate-500">支持智谱GLM-4-Flash、DeepSeek-Chat、通义千问-Plus、字节豆包、腾讯元宝。</p>
               </div>
               <div class="p-4 md:p-6 bg-white rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm text-center">
-                <div class="text-2xl md:text-4xl mb-2 md:mb-3">🌟</div>
+                <div class="mb-2 md:mb-3"><Sparkles :size="28" class="md:w-9 md:h-9 text-slate-400 mx-auto" /></div>
                 <h3 class="font-bold text-slate-800 mb-1 md:mb-2 font-heading text-sm md:text-base">永续开源</h3>
                 <p class="text-xs md:text-sm text-slate-500">基于 Vue 3 + Vite + Tailwind CSS 构建，无后端依赖，永久免费。</p>
               </div>
@@ -132,6 +132,7 @@
 </template>
 
 <script setup>
+import { BookHeart, CheckSquare, Clock, Users, MessageCircle, Wrench, Cpu, Shield, Sparkles, Heart } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
@@ -146,7 +147,7 @@ const tabs = [
 
 const philosophyItems = [
   {
-    icon: '📉',
+    icon: BookHeart,
     title: '情绪关怀，而非情绪监控',
     paragraphs: [
       '传统的情绪追踪工具像冷冰冰的表格——记录、分类、统计。但情绪不是数据点，情绪是你在深夜失眠时的叹息，是收到好消息时的雀跃。',
@@ -154,7 +155,7 @@ const philosophyItems = [
     ],
   },
   {
-    icon: '✅',
+    icon: CheckSquare,
     title: '高效规划，而非效率焦虑',
     paragraphs: [
       '市面上的任务管理工具推崇"极致效率"——但效率的尽头是倦怠。四象限法则的精髓不在于做更多事，而在于做对的事。',
@@ -162,7 +163,7 @@ const philosophyItems = [
     ],
   },
   {
-    icon: '🔔',
+    icon: Clock,
     title: '时光珍藏，而非数字囤积',
     paragraphs: [
       '手机里有成千上万张照片，但你还记得每一张背后的意义吗？时光纪念馆不是另一个云相册，它是你人生的里程碑地图。',
@@ -170,7 +171,7 @@ const philosophyItems = [
     ],
   },
   {
-    icon: '🔐',
+    icon: Shield,
     title: '隐私至上，永不作恶',
     paragraphs: [
       'LifeBridge 是100% 纯前端应用。没有后端服务器、没有数据库、没有用户注册。你输入的所有内容都存储在浏览器的 localStorage 中。',
@@ -180,12 +181,12 @@ const philosophyItems = [
 ];
 
 const featureDetails = [
-  { icon:'📉', title:'情绪日记与树洞', desc:'记录每天的心情变化，选择表情表达此刻感受。写下标题和内容，AI 作为温暖的倾听者以自然亲切的语气回应你、鼓励你。', tags: ['8种心情表情','AI倾听回应','隐私安全'] },
-  { icon:'✅', title:'四象限任务板', desc:'按照重要与紧急程度将任务分为四个象限。创建任务时可选择是否让 AI 优化任务描述，也可以对已有任务单独请求 AI 优化。', tags: ['四象限分类','AI任务优化','进度追踪'] },
-  { icon:'🔔', title:'时光纪念馆', desc:'记录人生中的每一个重要里程碑——职业成就、学业进步、感情节点、健康突破。上传照片，设置日期，系统自动计算距今时间。', tags: ['里程碑记录','纪念日提醒','图片上传'] },
-  { icon:'👰', title:'朋友圈', desc:'记录你的生活瞬间。支持公共动态和隐私动态（密码保护），可上传图片，AI 会以风趣幽默的语气给予评论。', tags: ['生活瞬间','隐私密码','AI趣味评论'] },
-  { icon:'💻', title:'AI 智能对话', desc:'自由选择5种国内大模型进行对话：智谱清言、DeepSeek、通义千问、字节豆包、腾讯元宝。支持多轮对话、历史记录保存。', tags: ['5种AI模型','对话历史','自由切换'] },
-  { icon:'🧰', title:'实用工具箱', desc:'灵感捕手快速记录想法；番茄专注钟支持自定义时长和专注统计；计算器随时使用；AI万能起名器；每日习惯打卡。', tags: ['番茄钟','计算器','起名器','习惯打卡'] },
+  { icon: BookHeart, title:'情绪日记与树洞', desc:'记录每天的心情变化，选择表情表达此刻感受。写下标题和内容，AI 作为温暖的倾听者以自然亲切的语气回应你、鼓励你。', tags: ['8种心情表情','AI倾听回应','隐私安全'] },
+  { icon: CheckSquare, title:'四象限任务板', desc:'按照重要与紧急程度将任务分为四个象限。创建任务时可选择是否让 AI 优化任务描述，也可以对已有任务单独请求 AI 优化。', tags: ['四象限分类','AI任务优化','进度追踪'] },
+  { icon: Clock, title:'时光纪念馆', desc:'记录人生中的每一个重要里程碑——职业成就、学业进步、感情节点、健康突破。上传照片，设置日期，系统自动计算距今时间。', tags: ['里程碑记录','纪念日提醒','图片上传'] },
+  { icon: Users, title:'朋友圈', desc:'记录你的生活瞬间。支持公共动态和隐私动态（密码保护），可上传图片，AI 会以风趣幽默的语气给予评论。', tags: ['生活瞬间','隐私密码','AI趣味评论'] },
+  { icon: MessageCircle, title:'AI 智能对话', desc:'自由选择5种国内大模型进行对话：智谱清言、DeepSeek、通义千问、字节豆包、腾讯元宝。支持多轮对话、历史记录保存。', tags: ['5种AI模型','对话历史','自由切换'] },
+  { icon: Wrench, title:'实用工具箱', desc:'灵感捕手快速记录想法；番茄专注钟支持自定义时长和专注统计；计算器随时使用；AI万能起名器；每日习惯打卡。', tags: ['番茄钟','计算器','起名器','习惯打卡'] },
 ];
 </script>
 
