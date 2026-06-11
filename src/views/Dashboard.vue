@@ -1,44 +1,51 @@
 <template>
-  <div class="p-4 md:p-8 w-full max-w-7xl mx-auto space-y-6">
-    <div class="bg-navy-500 text-white p-6 md:p-10 rounded-3xl shadow-lift">
-      <h1 class="text-2xl md:text-3xl font-bold font-heading">{{ greeting.text }}</h1>
-      <p class="mt-2 text-white/60 text-sm md:text-base">{{ greeting.sub }}</p>
-      <p class="mt-1 text-white/40 text-xs handwritten">{{ today }}</p>
+  <div class="space-y-6">
+    <!-- Greeting - gradient hero -->
+    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-6 md:p-10 rounded-3xl shadow-lg">
+      <h1 class="text-2xl md:text-3xl font-bold">{{ greeting.text }}</h1>
+      <p class="mt-2 text-white/70 text-xs md:text-sm">{{ greeting.sub }}</p>
+      <p class="mt-1 text-white/50 text-xs handwritten">{{ today }}</p>
     </div>
+
+    <!-- Stats cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div v-for="card in stats" :key="card.label" class="bg-white p-6 rounded-3xl border border-warmer-200 shadow-card hover:shadow-soft transition cursor-pointer hover:scale-105" @click="$router.push(card.to)">
-        <div class="text-3xl">{{ card.icon }}</div>
-        <div class="mt-3 text-3xl font-bold text-navy-500 font-heading">{{ card.value }}</div>
-        <div class="text-sm text-muted mt-1">{{ card.label }}</div>
+      <div v-for="card in stats" :key="card.label" class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer hover:scale-105" @click="$router.push(card.to)">
+        <div class="text-2xl">{{ card.icon }}</div>
+        <div class="mt-2 text-2xl font-bold text-slate-800">{{ card.value }}</div>
+        <div class="text-xs text-slate-400 mt-1">{{ card.label }}</div>
       </div>
     </div>
+
+    <!-- Two-column panels -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div class="bg-white p-6 rounded-3xl border border-warmer-200 shadow-card">
-        <h2 class="font-bold text-navy-500 text-base font-heading mb-3">🌸 最近情绪</h2>
-        <div v-if="recentDiaries.length === 0" class="text-sm text-muted py-6 text-center">还没有写过日记，去记录第一篇吧</div>
+      <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+        <h2 class="font-bold text-slate-800 text-sm mb-3">📉 最近情绪</h2>
+        <div v-if="recentDiaries.length === 0" class="text-xs text-slate-400 py-4 text-center">还没有写过日记，去记录第一篇吧</div>
         <div v-else class="space-y-2">
-          <div v-for="d in recentDiaries" :key="d.id" class="p-3 bg-warmer-100 rounded-2xl text-sm">
-            <div class="flex justify-between"><span class="font-semibold text-navy-500">{{ d.mood }}</span><span class="text-muted handwritten text-xs">{{ d.createdAt }}</span></div>
-            <p class="text-body mt-1 line-clamp-2">{{ d.content }}</p>
+          <div v-for="d in recentDiaries" :key="d.id" class="p-3 bg-slate-50 rounded-2xl text-xs">
+            <div class="flex justify-between"><span class="font-semibold text-slate-700">{{ d.mood }}</span><span class="text-slate-400 handwritten">{{ d.createdAt }}</span></div>
+            <p class="text-slate-500 mt-1 line-clamp-2">{{ d.content }}</p>
           </div>
         </div>
       </div>
-      <div class="bg-white p-6 rounded-3xl border border-warmer-200 shadow-card">
-        <h2 class="font-bold text-navy-500 text-base font-heading mb-3">🌱 今日待办</h2>
-        <div v-if="pendingTasks.length === 0" class="text-sm text-muted py-6 text-center">暂无待办任务</div>
+      <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+        <h2 class="font-bold text-slate-800 text-sm mb-3">✅ 今日待办</h2>
+        <div v-if="pendingTasks.length === 0" class="text-xs text-slate-400 py-4 text-center">暂无待办任务</div>
         <div v-else class="space-y-2">
-          <div v-for="t in pendingTasks" :key="t.id" class="p-3 bg-warmer-100 rounded-2xl text-sm flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full shrink-0" :class="t.quadrant === 'q1' ? 'bg-coral-400' : t.quadrant === 'q2' ? 'bg-sage-400' : t.quadrant === 'q3' ? 'bg-amber-400' : 'bg-subtle'"></span>
-            <span class="text-body">{{ t.title }}</span>
+          <div v-for="t in pendingTasks" :key="t.id" class="p-3 bg-slate-50 rounded-2xl text-xs flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full" :class="t.quadrant === 'q1' ? 'bg-rose-400' : t.quadrant === 'q2' ? 'bg-amber-400' : t.quadrant === 'q3' ? 'bg-indigo-400' : 'bg-slate-400'"></span>
+            <span class="text-slate-700">{{ t.title }}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="bg-white p-6 rounded-3xl border border-warmer-200 shadow-card">
-      <h2 class="font-bold text-navy-500 text-base font-heading mb-3">🌿 AI 生命洞察</h2>
-      <p v-if="aiInsight" class="text-body leading-relaxed">{{ aiInsight }}</p>
-      <p v-else class="text-muted text-sm">点击按钮，让 AI 为你生成今日洞察</p>
-      <button @click="generateInsight" :disabled="insightLoading" class="mt-4 px-5 py-2.5 bg-navy-500 text-white text-sm rounded-2xl hover:bg-navy-600 hover:scale-105 transition disabled:opacity-50 font-body">
+
+    <!-- AI Insight -->
+    <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-sm">
+      <h2 class="font-bold text-slate-800 text-sm mb-3">🧥 AI 生命洞察</h2>
+      <p v-if="aiInsight" class="text-sm text-slate-600 leading-relaxed">{{ aiInsight }}</p>
+      <p v-else class="text-xs text-slate-400">点击按钮，让 AI 为你生成今日洞察</p>
+      <button @click="generateInsight" :disabled="insightLoading" class="mt-3 px-4 py-2 bg-indigo-600 text-white text-xs rounded-xl hover:bg-indigo-700 hover:scale-105 transition disabled:opacity-50">
         {{ insightLoading ? 'AI 思考中...' : '✨ 获取今日洞察' }}
       </button>
     </div>
@@ -51,7 +58,7 @@ const greeting = hour < 6 ? { text:'夜深了，生活家 🌙',sub:'好好休�
 const today = now.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
 const recentDiaries = computed(() => storage.get(KEYS.DIARIES).slice(0,3));
 const pendingTasks = computed(() => storage.get(KEYS.TASKS).filter(t=>!t.done).slice(0,5));
-const stats = computed(() => [{icon:'🌸',label:'日记篇数',value:storage.get(KEYS.DIARIES).length,to:'/diary'},{icon:'🌱',label:'待办任务',value:storage.get(KEYS.TASKS).filter(t=>!t.done).length,to:'/tasks'},{icon:'🕯️',label:'里程碑',value:storage.get(KEYS.MILESTONES).length,to:'/timeline'}]);
+const stats = computed(() => [{icon:'📉',label:'日记篇数',value:storage.get(KEYS.DIARIES).length,to:'/diary'},{icon:'✅',label:'待办任务',value:storage.get(KEYS.TASKS).filter(t=>!t.done).length,to:'/tasks'},{icon:'🔔',label:'里程碑',value:storage.get(KEYS.MILESTONES).length,to:'/timeline'}]);
 const aiInsight = ref(''); const insightLoading = ref(false);
 const generateInsight = async () => { insightLoading.value=true; try{ const d=storage.get(KEYS.DIARIES).slice(0,5).map(d=>d.content).join('；'); const t=storage.get(KEYS.TASKS).filter(t=>!t.done).map(t=>t.title).join('、'); const r=await askAI({systemPrompt:'你是一个温暖的生活助理，请用一句话给出今天的生活洞察和建议，语气亲切。',userMessage:'最近日记：'+(d||'暂无')+'。待办：'+(t||'暂无')+'。请给我一句话的洞察。'}); aiInsight.value=r; }catch(e){aiInsight.value='⚠️ '+e.message;} insightLoading.value=false; };
 </script>
