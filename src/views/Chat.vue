@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 flex flex-col min-h-0">
+  <div class="flex flex-col" style="height: calc(100vh - 6rem)">
     <div class="border-b border-slate-100 pb-3 flex justify-between items-center shrink-0">
       <div><h1 class="text-xl md:text-2xl font-bold text-slate-800 font-heading">💻 AI 对话</h1><p class="hidden md:block text-sm text-slate-400 mt-1">与 AI 自由交流，选择不同的智能大脑</p></div>
       <div class="relative">
@@ -28,8 +28,8 @@
     </div>
     <div class="flex-1 overflow-y-auto py-3" ref="chatContainer">
       <div v-if="messages.length === 0" class="text-center text-slate-400 py-20">开始与 AI 对话吧 💬</div>
-      <div class="space-y-4 max-w-3xl mx-auto">
-        <div v-for="msg in messages" :key="msg.id" :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'" class="max-w-[85%] md:max-w-[75%]">
+      <div class="space-y-4 w-full max-w-4xl mx-auto">
+        <div v-for="msg in messages" :key="msg.id" :class="msg.role === 'user' ? 'ml-auto' : 'mr-auto'" class="max-w-[85%] md:max-w-[80%]">
           <div :class="msg.role === 'user' ? 'bg-primary-600 text-white' : 'bg-white border border-slate-100 shadow-sm'" class="p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap">{{ msg.content }}</div>
           <div class="text-[10px] text-slate-400 mt-1 handwritten" :class="msg.role === 'user' ? 'text-right' : 'text-left'">{{ msg.time }}</div>
         </div>
@@ -37,7 +37,7 @@
       <div v-if="loading" class="text-center text-slate-400 py-4"><span class="animate-pulse">AI 正在思考...</span></div>
     </div>
     <div class="py-3 border-t border-slate-100 bg-white shrink-0">
-      <div class="flex gap-2 max-w-3xl mx-auto">
+      <div class="flex gap-2 w-full max-w-4xl mx-auto">
         <textarea v-model="input" rows="2" placeholder="输入消息..." class="flex-1 p-3 bg-slate-50 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary-200 resize-none placeholder:text-slate-300" @keyup.ctrl.enter="sendMessage"></textarea>
         <button @click="sendMessage" :disabled="loading || !input.trim()" class="px-6 py-3 bg-primary-600 text-white text-sm rounded-xl hover:bg-primary-700 hover:scale-[1.02] transition disabled:opacity-50 self-end font-body">发送</button>
       </div>

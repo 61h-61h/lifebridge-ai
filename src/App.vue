@@ -42,7 +42,17 @@
       </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto pb-16 md:pb-0 min-h-0">
+    <!-- Chat page: full width, no container -->
+    <main v-if="isChat" class="flex-1 overflow-hidden min-h-0 flex flex-col p-4 md:p-6">
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </main>
+
+    <!-- Other pages: max-w-6xl container -->
+    <main v-else class="flex-1 overflow-y-auto pb-16 md:pb-0 min-h-0">
       <div class="max-w-6xl mx-auto p-4 md:p-10">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
@@ -69,6 +79,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 const mobileMenuOpen = ref(false);
 const isLanding = computed(() => route.path === '/');
+const isChat = computed(() => route.path === '/chat');
 const navItems = [
   { path:'/dashboard',label:'主控台',icon:'🏠'},{ path:'/diary',label:'情绪日记',icon:'📉'},{ path:'/tasks',label:'任务板',icon:'✅'},{ path:'/timeline',label:'时光纪念馆',icon:'🔔'},{ path:'/moments',label:'朋友圈',icon:'👰'},{ path:'/tools',label:'实用工具箱',icon:'🧰'},{ path:'/chat',label:'AI 对话',icon:'💻'},{ path:'/settings',label:'AI 脑核中心',icon:'🧥'},
 ];
