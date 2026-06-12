@@ -7,7 +7,7 @@
     </router-view>
   </div>
 
-  <div v-else class="flex flex-col md:flex-row h-dvh overflow-hidden bg-[#FDFCF8]">
+  <div v-else class="flex flex-col md:flex-row h-screen overflow-hidden bg-[#FDFCF8]">
 
     <header class="md:hidden flex items-center justify-between bg-white px-4 py-3 shrink-0 z-20 border-b border-slate-100">
       <h1 class="text-sm font-bold text-slate-800 font-heading tracking-tight">LifeBridge<span class="text-slate-400 font-normal">.</span></h1>
@@ -42,7 +42,7 @@
       </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto min-h-0 pb-24 md:pb-0">
+    <main class="flex-1 overflow-y-auto pb-24 md:pb-0" style="min-height:0">
       <router-view v-slot="{ Component, route: r }">
         <transition name="fade" mode="out-in">
           <component :is="Component" :key="r.fullPath" />
